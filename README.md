@@ -25,7 +25,7 @@ curl -X POST "http://localhost:8000/search" \
 
 ## API Keys Needed
 - **Anthropic**: [console.anthropic.com](https://console.anthropic.com/)
-- **Brave Search**: [api.search.brave.com](https://api.search.brave.com/)
+- **Brave Search**: key on the event website. 
 
 ## Endpoints
 - `GET /` - Health check
@@ -33,5 +33,4 @@ curl -X POST "http://localhost:8000/search" \
 - `POST /summarize` - Summarize text
 - `POST /search` - Brave Search
 
-## Docs
-- `http://localhost:8000/docs` - Interactive API docs
+
