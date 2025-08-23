@@ -1,0 +1,112 @@
+COMPANY ANALYSIS REPORT
+Generated on: 2025-08-23 16:03:24
+Query: Netflix
+Company: N/A
+Product: N/A
+
+================================================================================
+
+SECTION 1: CONTENT ANALYSIS
+================================================================================
+
+Content Type: terms_and_conditions
+Source URL: https://www.vodacom.co.za/vodacom/terms/netflix-terms-and-conditions
+Status: success
+
+Content:
+----------------------------------------
+Skip to main content
+Personal Business
+ Find a store
+Shop
+.
+Shop now
+Services
+VodaPay
+Rewards
+Lifestyle
+Help
+TOBi
+Live chat now
+ 
+ 
+Log in to your account
+Don't have an account yet? Register now
+Log in
+Netflix Terms of Use
+
+Netflix provides a subscription service that allows our members to access movies and TV shows ("Netflix content") streamed over the Internet to certain Internet-connected TVs, computers and other devices ("Netflix ready devices").
+The Netflix service is provided to you by Netflix International B.V., a Netherlands limited liability company. These Terms of Use govern your use of our service. As used in these Terms of Use, "Netflix service", "our service" or "the service" means the service provided by Netflix for discovering and watching Netflix content, including all features and functionalities, recommendations and reviews, the website, and user interfaces, as well as all content and software associated with our service.
+
+Membership.
+
+Your Netflix membership will con...
+
+================================================================================
+
+SECTION 2: REDDIT DISCUSSIONS & SENTIMENT
+================================================================================
+
+Status: success
+
+Reddit Discussions about Netflix:
+==================================================
+
+1. r/netflix on Reddit: The most binge worthy Netflix show or movie you’ve ever watched
+   URL: https://www.reddit.com/r/netflix/comments/1mw700m/the_most_binge_worthy_netflix_show_or_movie_youve/
+   Description: 750 votes, 1.3K comments. You ever start a show or movie on <strong>Netflix</strong> thinking you’ll just watch one episode, then suddenly it’s 3am and you’ve watched…...
+
+2. r/StrangerThings on Reddit: The Duffer Brothers (ST creators) are officially leaving Netflix for Paramount
+   URL: https://www.reddit.com/r/StrangerThings/comments/1mre9gx/the_duffer_brothers_st_creators_are_officially/
+   Description: 1.6K votes, 223 comments. 2.5M subscribers in the StrangerThings community. Sub for the <strong>Netflix</strong> Original series: Stranger Things. The disappearance of a young boy sparks a chain of ev...
+
+3. r/netflix on Reddit: Netflix’s KPop Demon Hunters Movie Theater Screenings Are Already Almost Sold Out
+   URL: https://www.reddit.com/r/netflix/comments/1mvg1hu/netflixs_kpop_demon_hunters_movie_theater/
+   Description: 205 votes, 43 comments. 1.8M subscribers in the <strong>netflix</strong> community. Unofficial <strong>Netflix</strong> discussion, and all things <strong>Netflix</strong> related! (Mods are not <stro...
+
+4. r/movies on Reddit: Netflix's Streaming Smash Hit ‘KPop Demon Hunters’ Releasing in 1,700 Cinemas This Weekend for "Sing Along" Version, 1,000 Screenings Already Sold Out
+   URL: https://www.reddit.com/r/movies/comments/1mvgr1g/netflixs_streaming_smash_hit_kpop_demon_hunters/
+   Description: 9.1K votes, 984 comments. 37M subscribers in the movies community. The goal of /r/Movies is to provide an inclusive place for discussions and news about films with major releases. Submissions should b...
+
+5. r/netflix on Reddit: Had this gem of an interaction with a Netflix rep. I called for support and he ended up cancelling my account.
+   URL: https://www.reddit.com/r/netflix/comments/1mv1iic/had_this_gem_of_an_interaction_with_a_netflix_rep/
+   Description: 398 votes, 89 comments. Some of the messages were cut out for privacy. If parts of the conversation doesn&#x27;t make sense to you, it&#x27;s not because of…...
+
+6. r/fivenightsatfreddys on Reddit: The movie is coming to netflix on the 29th of August
+   URL: https://www.reddit.com/r/fivenightsatfreddys/comments/1mvy4xe/the_movie_is_coming_to_netflix_on_the_29th_of/
+   Description: 290 votes, 24 comments. Sorry for bad picture quality...
+
+7. Netflix
+   URL: https://www.reddit.com/r/netflix/
+   Description: Unofficial <strong>Netflix</strong> discussion, and all things <strong>Netflix</strong> related! (Mods are not <strong>Netflix</strong> employees, but employees occasionally post here)....
+
+8. r/netflix on Reddit: device is not part of netflix household
+   URL: https://www.reddit.com/r/netflix/comments/1l8zagg/device_is_not_part_of_netflix_household/
+   Description: This message appeared today while i was watching a movie. This is the first time it happened. I don&#x27;t live with my family cause i go to university in…...
+
+9. r/interestingasfuck on Reddit: Netflix.com was launched 25 years ago on April 14, 1998. This is what the website looked like in August 1999.
+   URL: https://www.reddit.com/r/interestingasfuck/comments/12mgaj6/netflixcom_was_launched_25_years_ago_on_april_14/
+   Description: 11K votes, 403 comments. 16M subscribers in the interestingasfuck community. For anything truly interesting as fuck...
+
+10. r/Scams on Reddit: Bizarre Netflix Scam? Is netflix.com the right domain? What is going on?
+   URL: https://www.reddit.com/r/Scams/comments/wh06wr/bizarre_netflix_scam_is_netflixcom_the_right/
+   Description: 39 votes, 15 comments. A couple days ago I got an email informing me my <strong>Netflix</strong> email address and phone number associated with the account got…...
+
+
+Total discussions found: 10
+
+
+================================================================================
+
+SUMMARY
+================================================================================
+
+This report contains:
+1. Terms And Conditions from https://www.vodacom.co.za/vodacom/terms/netflix-terms-and-conditions
+2. Reddit community discussions and sentiment analysis
+3. Generated on 2025-08-23 16:03:24
+
+Content Status: success
+Reddit Search Status: success
+
+Total Reddit Results: 10
