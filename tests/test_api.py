@@ -59,3 +59,23 @@ def test_summarize_endpoint_with_max_length():
     )
     # This will fail because no API key is set in test environment
     assert response.status_code in [401, 500]
+
+
+def test_search_endpoint_no_api_key():
+    """Test the search endpoint without API key (should fail gracefully)"""
+    response = client.post(
+        "/search",
+        json={"query": "test search query"}
+    )
+    # This will fail because no API key is set in test environment
+    assert response.status_code in [401, 500]
+
+
+def test_search_endpoint_with_count():
+    """Test the search endpoint with count parameter"""
+    response = client.post(
+        "/search",
+        json={"query": "test search query", "count": 5}
+    )
+    # This will fail because no API key is set in test environment
+    assert response.status_code in [401, 500]

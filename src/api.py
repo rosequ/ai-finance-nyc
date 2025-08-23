@@ -35,6 +35,10 @@ class TextRequest(BaseModel):
     text: str
     max_length: Optional[int] = 500
 
+class SearchRequest(BaseModel):
+    query: str
+    count: Optional[int] = 10
+
 class WebDataResponse(BaseModel):
     url: str
     title: str
@@ -45,6 +49,12 @@ class SummaryResponse(BaseModel):
     original_length: int
     summary: str
     summary_length: int
+
+class SearchResponse(BaseModel):
+    query: str
+    results: list
+    total_results: int
+    status: str
 
 
 @app.get("/")
@@ -144,9 +154,80 @@ async def summarize_text(request: TextRequest):
             detail="Rate limit exceeded. Please try again later."
         )
     except Exception as e:
+                 raise HTTPException(
+             status_code=500, 
+             detail=f"Error generating summary: {str(e)}"
+         )
+
+
+@app.post("/search", response_model=SearchResponse)
+async def brave_search(request: SearchRequest):
+    """
+    Search using Brave Search API
+    """
+    try:
+        # Check if API key is configured
+        brave_api_key = os.getenv("BRAVE_API_KEY")
+        if not brave_api_key:
+            raise HTTPException(
+                status_code=500, 
+                detail="Brave API key not configured. Please set BRAVE_API_KEY in your .env file."
+            )
+        
+        # Prepare search request
+        headers = {
+            "Accept": "application/json",
+            "X-Subscription-Token": brave_api_key
+        }
+        
+        params = {
+            "q": request.query,
+            "count": request.count
+        }
+        
+        # Make request to Brave Search API
+        response = requests.get(
+            "https://api.search.brave.com/res/v1/web/search",
+            headers=headers,
+            params=params,
+            timeout=10
+        )
+        
+        if response.status_code != 200:
+            raise HTTPException(
+                status_code=response.status_code,
+                detail=f"Brave Search API error: {response.text}"
+            )
+        
+        search_data = response.json()
+        
+        # Extract results
+        results = []
+        if "web" in search_data and "results" in search_data["web"]:
+            for result in search_data["web"]["results"]:
+                results.append({
+                    "title": result.get("title", ""),
+                    "url": result.get("url", ""),
+                    "description": result.get("description", ""),
+                    "published": result.get("published", "")
+                })
+        
+        return SearchResponse(
+            query=request.query,
+            results=results,
+            total_results=len(results),
+            status="success"
+        )
+        
+    except requests.RequestException as e:
+        raise HTTPException(
+            status_code=400, 
+            detail=f"Failed to search: {str(e)}"
+        )
+    except Exception as e:
         raise HTTPException(
             status_code=500, 
-            detail=f"Error generating summary: {str(e)}"
+            detail=f"Error performing search: {str(e)}"
         )
 
 
