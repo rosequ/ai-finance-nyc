@@ -137,3 +137,8 @@ cython_debug/
 
 # uv
 .uv/
+
+company_analysis_reports/*
+terms_and_conditions/*
+
+

@@ -1,5 +1,5 @@
 URL ANALYSIS REPORT
-Generated on: 2025-08-23 16:35:32
+Generated on: 2025-08-23 16:38:53
 Input URL: https://www.americanexpress.com/us/credit-cards/card-application/apply/prospect/terms/gold-card/25330-10-0#offer-terms
 Analysis Type: URL Scraping
 
@@ -76,4 +76,4 @@ SUMMARY
 Analysis Type: URL Scraping
 Scraping Status: success
 Reddit Search Status: success
-Generated: 2025-08-23 16:35:32
+Generated: 2025-08-23 16:38:53
