@@ -1,8 +1,19 @@
-.PHONY: help install dev-install test lint format clean run
+.PHONY: help install dev-install test lint format clean run setup
 
 help: ## Show this help message
 	@echo "Available commands:"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-20s\033[0m %s\n", $$1, $$2}'
+
+setup: ## Initial setup - copy .env.example to .env
+	@if [ ! -f .env ]; then \
+		cp .env.example .env; \
+		echo "✅ Created .env file from .env.example"; \
+		echo "📝 Please edit .env and add your API keys:"; \
+		echo "   - ANTHROPIC_API_KEY=your_anthropic_api_key_here"; \
+		echo "   - BRAVE_API_KEY=your_brave_api_key_here"; \
+	else \
+		echo "⚠️  .env file already exists. Skipping setup."; \
+	fi
 
 install: ## Install production dependencies
 	uv sync

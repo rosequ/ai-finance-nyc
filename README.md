@@ -14,21 +14,6 @@ A simple Python project using uv for dependency management and Make for automati
    make dev-install
    ```
 
-## Usage
-
-### Available Commands
-
-- `make help` - Show all available commands
-- `make install` - Install production dependencies
-- `make dev-install` - Install development dependencies
-- `make test` - Run tests
-- `make lint` - Run linting
-- `make format` - Format code with black
-- `make clean` - Clean up cache and temporary files
-- `make run` - Run the main application
-- `make server` - Run the FastAPI server
-- `make dev-server` - Run the FastAPI server in development mode with auto-reload
-
 ### Running the Application
 
 ```bash
@@ -62,15 +47,20 @@ Once the server is running, visit:
 
 ### Environment Setup
 
-1. Copy the `.env` file and add your API keys:
+1. Run the setup command to create your `.env` file:
    ```bash
-   cp .env .env.local
-   # Edit .env.local and add your actual API keys:
+   make setup
+   ```
+
+2. Edit the `.env` file and add your API keys:
+   ```bash
+   nano .env
+   # Add your actual API keys:
    # ANTHROPIC_API_KEY=your_anthropic_api_key_here
    # BRAVE_API_KEY=your_brave_api_key_here
    ```
 
-2. Install dependencies:
+3. Install dependencies:
    ```bash
    make dev-install
    ```
@@ -101,7 +91,7 @@ ai-finance-nyc/
 │   └── test_api.py
 ├── pyproject.toml
 ├── Makefile
-├── .env
+├── .env.example
 ├── .gitignore
 └── README.md
 ```
