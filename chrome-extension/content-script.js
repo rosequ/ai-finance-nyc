@@ -167,8 +167,8 @@
           </div>
           
           <div class="tc-details">
-            <strong>Content:</strong> ${analysis.contentLength.toLocaleString()} characters, 
-            ${analysis.wordCount.toLocaleString()} words
+            <strong>Content:</strong> ${(analysis.contentLength || 0).toLocaleString()} characters, 
+            ${(analysis.wordCount || 0).toLocaleString()} words
           </div>
           
           ${analysis.indicators.length > 0 ? `

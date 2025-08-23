@@ -1,95 +1,130 @@
-// Background script for Terms & Conditions Analyzer
+// Background script for Terms & Conditions Analyzer - Service Worker
+console.log('🚀 Background service worker starting...');
+
 const API_BASE_URL = 'http://localhost:8000';
 
 // Storage for analysis results
 let analysisCache = new Map();
 
+// Service worker installation
+self.addEventListener('install', (event) => {
+  console.log('🔧 Service worker installing...');
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (event) => {
+  console.log('✅ Service worker activated');
+  event.waitUntil(self.clients.claim());
+});
+
 // Handle extension installation
 chrome.runtime.onInstalled.addListener(() => {
-  console.log('Terms & Conditions Analyzer installed');
+  console.log('📦 Terms & Conditions Analyzer installed');
 });
 
 // Handle messages from content script and popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.action === 'analyzeCurrentPage') {
-    analyzeCurrentPage(sender.tab.id, sender.tab.url)
-      .then(result => sendResponse({ success: true, data: result }))
-      .catch(error => sendResponse({ success: false, error: error.message }));
-    return true; // Will respond asynchronously
-  }
+  console.log('📨 Background script received message:', request);
+  console.log('👤 Message sender:', sender);
   
-  if (request.action === 'analyzeUrl') {
-    analyzeUrl(request.url)
-      .then(result => sendResponse({ success: true, data: result }))
-      .catch(error => sendResponse({ success: false, error: error.message }));
-    return true; // Will respond asynchronously
-  }
-  
-  if (request.action === 'findTermsAndConditions') {
-    findTermsAndConditions(request.query, request.companyName)
-      .then(result => sendResponse({ success: true, data: result }))
-      .catch(error => sendResponse({ success: false, error: error.message }));
-    return true; // Will respond asynchronously
+  try {
+    // Handle different message types
+    switch (request.action) {
+      case 'analyzeCurrentPage':
+        console.log('🔍 Handling analyzeCurrentPage action');
+        handleAnalyzeCurrentPage(request, sender, sendResponse);
+        return true; // Will respond asynchronously
+        
+      case 'test':
+        console.log('🧪 Handling test action');
+        sendResponse({ success: true, message: 'Background script is working!' });
+        return false;
+        
+      default:
+        console.log('❓ Unknown action:', request.action);
+        sendResponse({ success: false, error: `Unknown action: ${request.action}` });
+        return false;
+    }
+  } catch (error) {
+    console.error('❌ Error in message listener:', error);
+    sendResponse({ success: false, error: error.message });
+    return false;
   }
 });
 
-// Analyze the current page content
-async function analyzeCurrentPage(tabId, url) {
+// Handle analyze current page request
+async function handleAnalyzeCurrentPage(request, sender, sendResponse) {
   try {
-    console.log('Analyzing current page for T&C content:', url);
+    console.log('🔍 Handling analyzeCurrentPage request:', request);
+    console.log('📝 Sender info:', sender);
+    
+    // Get tab info from request or sender
+    let tabId = request.tabId;
+    let url = request.url;
+    
+    console.log('📋 Initial tab info - ID:', tabId, 'URL:', url);
+    
+    // If not provided in request, try to get from sender
+    if (!tabId || !url) {
+      if (sender && sender.tab) {
+        tabId = sender.tab.id;
+        url = sender.tab.url;
+        console.log('📋 Got tab info from sender - ID:', tabId, 'URL:', url);
+      } else {
+        // Try to get current active tab
+        try {
+          const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+          if (tabs.length > 0) {
+            tabId = tabs[0].id;
+            url = tabs[0].url;
+            console.log('📋 Got tab info from query - ID:', tabId, 'URL:', url);
+          }
+        } catch (error) {
+          console.error('❌ Error getting active tab:', error);
+        }
+      }
+    }
+    
+    if (!tabId || !url) {
+      console.error('❌ No tab information available');
+      sendResponse({ success: false, error: 'No tab information available' });
+      return;
+    }
+    
+    console.log('🌐 Starting analysis for URL:', url);
     
     // Check cache first
     const cacheKey = `page_${url}`;
     if (analysisCache.has(cacheKey)) {
-      console.log('Returning cached T&C analysis');
-      return analysisCache.get(cacheKey);
+      console.log('💾 Returning cached analysis');
+      sendResponse({ success: true, data: analysisCache.get(cacheKey) });
+      return;
     }
     
-    // Call the scraping API
-    const response = await fetch(`${API_BASE_URL}/scrape`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ url: url })
-    });
-    
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    
-    // Analyze the content specifically for terms & conditions indicators
-    const analysis = analyzeContentForTerms(data.content, url);
-    
-    const result = {
-      url: url,
-      title: data.title,
-      content: data.content,
-      analysis: analysis,
-      timestamp: new Date().toISOString(),
-      status: data.status,
-      analysisType: 'terms_only' // Flag to indicate simplified analysis
-    };
+    // Analyze the page
+    console.log('🤖 Starting LLM analysis...');
+    const result = await analyzePageWithLLM(url);
     
     // Cache the result
     analysisCache.set(cacheKey, result);
     
-    return result;
+    console.log('✅ Analysis completed successfully:', result);
+    sendResponse({ success: true, data: result });
     
   } catch (error) {
-    console.error('Error analyzing current page for T&C:', error);
-    throw error;
+    console.error('❌ Error in handleAnalyzeCurrentPage:', error);
+    console.error('❌ Error stack:', error.stack);
+    sendResponse({ success: false, error: error.message });
   }
 }
 
-// Analyze a specific URL
-async function analyzeUrl(url) {
+// Analyze page content using LLM ONLY
+async function analyzePageWithLLM(url) {
   try {
-    console.log('Analyzing URL:', url);
+    console.log('Scraping and analyzing URL with LLM (no fallbacks):', url);
     
-    const response = await fetch(`${API_BASE_URL}/scrape`, {
+    // First, scrape the content
+    const scrapeResponse = await fetch(`${API_BASE_URL}/scrape`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -97,169 +132,90 @@ async function analyzeUrl(url) {
       body: JSON.stringify({ url: url })
     });
     
-    if (!response.ok) {
-      throw new Error(`API request failed: ${response.status}`);
+    if (!scrapeResponse.ok) {
+      throw new Error(`Scraping failed: ${scrapeResponse.status} ${scrapeResponse.statusText}`);
     }
     
-    const data = await response.json();
-    const analysis = analyzeContentForTerms(data.content, url);
+    const scrapeData = await scrapeResponse.json();
+    console.log('📄 Scraping completed!');
+                console.log('📊 Content length:', scrapeData.content?.length || 0);
+            console.log('📝 Title:', scrapeData.title);
+            console.log('🔍 Content preview (first 500 chars):');
+            console.log(scrapeData.content?.substring(0, 500) + '...');
+            
+            // Check content readability
+            if (scrapeData.content) {
+                const sample = scrapeData.content.substring(0, 1000);
+                const printableChars = sample.split('').filter(c => c.match(/[\x20-\x7E]/) || c.match(/[\n\r\t]/)).length;
+                const readabilityRatio = printableChars / sample.length;
+                console.log('📊 Content readability ratio:', (readabilityRatio * 100).toFixed(1) + '%');
+                
+                if (readabilityRatio < 0.7) {
+                    console.log('⚠️ WARNING: Content appears to be binary/encoded data');
+                    console.log('🔍 First 100 char codes:', sample.substring(0, 100).split('').map(c => c.charCodeAt(0)));
+                } else {
+                    console.log('✅ Content appears readable');
+                }
+            }
+            
+            console.log('📋 Full scraped data structure:', scrapeData);
     
-    return {
+    // Ensure we have content to analyze
+    if (!scrapeData.content || scrapeData.content.trim().length === 0) {
+      console.error('❌ No content available to analyze');
+      throw new Error('No content available to analyze');
+    }
+    
+    // Now analyze with LLM - this is the ONLY analysis method
+    console.log('Calling LLM analysis endpoint...');
+    const analysisResponse = await fetch(`${API_BASE_URL}/analyze-terms`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ 
+        text: scrapeData.content,
+        url: url,
+        title: scrapeData.title
+      })
+    });
+    
+    if (!analysisResponse.ok) {
+      const errorText = await analysisResponse.text();
+      console.error('LLM analysis failed:', errorText);
+      throw new Error(`LLM analysis failed: ${analysisResponse.status} - ${errorText}`);
+    }
+    
+    const analysisData = await analysisResponse.json();
+    console.log('LLM analysis completed successfully:', analysisData);
+    
+    // Combine scrape data with LLM analysis
+    const result = {
       url: url,
-      title: data.title,
-      content: data.content,
-      analysis: analysis,
+      title: scrapeData.title,
+      content: scrapeData.content,
+      analysis: analysisData,
       timestamp: new Date().toISOString(),
-      status: data.status
+      status: 'success',
+      analysisType: 'llm_powered'
     };
     
+    return result;
+    
   } catch (error) {
-    console.error('Error analyzing URL:', error);
-    throw error;
+    console.error('LLM-only analysis failed:', error);
+    
+    // NO FALLBACKS - fail gracefully with clear message
+    throw new Error(`LLM analysis unavailable: ${error.message}. Please check your API key and try again.`);
   }
 }
 
-// Find terms and conditions for a company (simplified - no external search)
-async function findTermsAndConditions(query, companyName = null) {
-  try {
-    console.log('Finding terms and conditions for (T&C focus):', query);
-    
-    // For now, just return a simplified response suggesting manual URL entry
-    // This avoids complex search functionality and focuses on T&C analysis
-    return {
-      query: query,
-      companyName: companyName,
-      termsUrl: '',
-      content: `To analyze ${query}'s terms and conditions:\n\n1. Search for "${query} terms and conditions" in your browser\n2. Copy the terms page URL\n3. Use "Analyze Custom URL" feature in this extension\n\nThis approach gives you direct control over which terms page to analyze.`,
-      filePath: '',
-      status: 'manual_search_required',
-      timestamp: new Date().toISOString(),
-      suggestion: `Try searching: "${query} terms and conditions" OR "${query} terms of service"`
-    };
-    
-  } catch (error) {
-    console.error('Error in simplified terms finder:', error);
-    throw error;
-  }
-}
-
-// Analyze content to determine if it contains terms & conditions
-function analyzeContentForTerms(content, url) {
-  if (!content) {
-    return {
-      isTermsPage: false,
-      confidence: 0,
-      indicators: [],
-      summary: "No content available for analysis"
-    };
-  }
-  
-  const contentLower = content.toLowerCase();
-  
-  // Terms & conditions indicators
-  const termsIndicators = [
-    { phrase: 'terms and conditions', weight: 10 },
-    { phrase: 'terms of service', weight: 10 },
-    { phrase: 'terms of use', weight: 10 },
-    { phrase: 'user agreement', weight: 8 },
-    { phrase: 'legal agreement', weight: 8 },
-    { phrase: 'end user license agreement', weight: 9 },
-    { phrase: 'eula', weight: 7 },
-    { phrase: 'privacy policy', weight: 6 },
-    { phrase: 'by using this', weight: 5 },
-    { phrase: 'you agree to', weight: 5 },
-    { phrase: 'acceptance of terms', weight: 8 },
-    { phrase: 'liability', weight: 4 },
-    { phrase: 'disclaimer', weight: 4 },
-    { phrase: 'governing law', weight: 6 },
-    { phrase: 'intellectual property', weight: 5 },
-    { phrase: 'limitation of liability', weight: 7 },
-    { phrase: 'dispute resolution', weight: 6 },
-    { phrase: 'arbitration', weight: 5 },
-    { phrase: 'termination', weight: 4 },
-    { phrase: 'prohibited uses', weight: 5 }
-  ];
-  
-  // URL indicators
-  const urlIndicators = [
-    { phrase: '/terms', weight: 8 },
-    { phrase: '/legal', weight: 6 },
-    { phrase: '/privacy', weight: 5 },
-    { phrase: '/agreement', weight: 7 },
-    { phrase: '/conditions', weight: 8 }
-  ];
-  
-  let score = 0;
-  let foundIndicators = [];
-  
-  // Check content indicators
-  termsIndicators.forEach(indicator => {
-    if (contentLower.includes(indicator.phrase)) {
-      score += indicator.weight;
-      foundIndicators.push({
-        type: 'content',
-        phrase: indicator.phrase,
-        weight: indicator.weight
-      });
-    }
-  });
-  
-  // Check URL indicators
-  const urlLower = url.toLowerCase();
-  urlIndicators.forEach(indicator => {
-    if (urlLower.includes(indicator.phrase)) {
-      score += indicator.weight;
-      foundIndicators.push({
-        type: 'url',
-        phrase: indicator.phrase,
-        weight: indicator.weight
-      });
-    }
-  });
-  
-  // Calculate confidence percentage
-  const maxPossibleScore = 100; // Adjust based on typical scores
-  const confidence = Math.min(100, (score / maxPossibleScore) * 100);
-  
-  // Determine if this is likely a terms page
-  const isTermsPage = score >= 15; // Threshold for considering it a terms page
-  
-  // Generate summary
-  let summary = "";
-  if (isTermsPage) {
-    summary = `This appears to be a terms and conditions page (${confidence.toFixed(1)}% confidence). `;
-    summary += `Found ${foundIndicators.length} relevant indicators. `;
-    
-    const topIndicators = foundIndicators
-      .sort((a, b) => b.weight - a.weight)
-      .slice(0, 3)
-      .map(i => i.phrase);
-    
-    if (topIndicators.length > 0) {
-      summary += `Key terms: ${topIndicators.join(', ')}.`;
-    }
-  } else {
-    summary = `This does not appear to be a terms and conditions page (${confidence.toFixed(1)}% confidence). `;
-    if (foundIndicators.length > 0) {
-      summary += `Found ${foundIndicators.length} weak indicators.`;
-    } else {
-      summary += `No relevant terms indicators found.`;
-    }
-  }
-  
-  return {
-    isTermsPage: isTermsPage,
-    confidence: confidence,
-    score: score,
-    indicators: foundIndicators,
-    summary: summary,
-    contentLength: content.length,
-    wordCount: content.split(/\s+/).length
-  };
-}
+// LLM-only analysis - no pattern matching fallbacks
 
 // Clear cache periodically (every 30 minutes)
 setInterval(() => {
   console.log('Clearing analysis cache');
   analysisCache.clear();
 }, 30 * 60 * 1000);
+
+console.log('Background script setup complete');

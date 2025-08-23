@@ -155,8 +155,36 @@ body {
 }
 
 .result-details {
-    color: #6c757d;
+    color: #495057;
     font-size: 12px;
+    line-height: 1.5;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 8px 0;
+    scrollbar-width: thin;
+    scrollbar-color: #dee2e6 transparent;
+}
+
+.result-details::-webkit-scrollbar {
+    width: 6px;
+}
+
+.result-details::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.result-details::-webkit-scrollbar-thumb {
+    background: #dee2e6;
+    border-radius: 3px;
+}
+
+.result-details::-webkit-scrollbar-thumb:hover {
+    background: #adb5bd;
+}
+
+.result-details strong {
+    color: #343a40;
+    font-weight: 600;
 }
 
 /* Terms Page Results */

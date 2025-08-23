@@ -74,6 +74,31 @@ class TermsAndConditionsResponse(BaseModel):
     file_path: str
     status: str
 
+class TermsAnalysisRequest(BaseModel):
+    text: str
+    url: Optional[str] = None
+    title: Optional[str] = None
+
+class ComplianceIndicators(BaseModel):
+    gdpr: str
+    ccpa: str
+    plainLanguage: str
+
+class TermsAnalysisResponse(BaseModel):
+    isTermsPage: bool
+    confidence: float
+    documentType: str
+    summary: str
+    keyFindings: list
+    riskLevel: str
+    riskFactors: list
+    consumerProtections: list
+    recommendations: list
+    complianceIndicators: ComplianceIndicators
+    lastUpdated: str
+    redFlags: list
+    analysisMethod: str = "llm_powered"
+
 
 
 
@@ -102,19 +127,37 @@ async def scrape_website(request: UrlRequest):
         }
         
         # Make request to the URL with longer timeout and better headers
-        print(f"📡 Making HTTP request...")
+        print(f"📡 Making HTTP request to: {request.url}")
         response = requests.get(str(request.url), headers=headers, timeout=30, allow_redirects=True)
         
         print(f"📊 Response status: {response.status_code}")
+        print(f"🔗 Final URL after redirects: {response.url}")
         print(f"📄 Content length: {len(response.content)} bytes")
+        print(f"📋 Content type: {response.headers.get('content-type', 'unknown')}")
+        print(f"🔤 Response encoding: {response.encoding}")
+        
+        # Show first 200 bytes of raw content for debugging
+        print(f"🔍 Raw content preview: {response.content[:200]}")
         
         # Even if we get a non-200 status, try to extract content if possible
         if response.status_code not in [200, 301, 302]:
             print(f"⚠️ Non-200 status code: {response.status_code}")
             # Don't raise an error, just note it
         
-        # Parse HTML content
-        soup = BeautifulSoup(response.content, 'html.parser')
+        # Ensure proper encoding
+        if response.encoding is None:
+            response.encoding = 'utf-8'
+            print(f"🔤 Set default encoding to utf-8")
+        
+        # Check if content is actually HTML
+        content_type = response.headers.get('content-type', '').lower()
+        if 'text/html' not in content_type and 'application/xhtml' not in content_type:
+            print(f"⚠️ Non-HTML content type: {content_type}")
+        
+        # Parse HTML content with proper encoding
+        print(f"🔧 Parsing HTML content...")
+        soup = BeautifulSoup(response.content, 'html.parser', from_encoding=response.encoding)
+        print(f"📋 Parsed HTML, found {len(soup.find_all())} elements")
         
         # Extract title - try multiple approaches
         title = ""
@@ -129,19 +172,106 @@ async def scrape_website(request: UrlRequest):
         
         # Extract text content - be less aggressive with removal
         # Only remove clearly problematic elements
-        for element in soup(["script", "style", "noscript"]):
+        for element in soup(["script", "style", "noscript", "nav", "header", "footer"]):
             element.decompose()
         
-        # Try to get main content first
-        main_content = soup.find('main') or soup.find('article') or soup.find('div', class_='content')
+        # Try multiple strategies to find the main content
+        content_selectors = [
+            'main',
+            'article', 
+            '.content',
+            '.main-content',
+            '#content',
+            '#main',
+            '.post-content',
+            '.entry-content',
+            '.terms',
+            '.legal',
+            '.policy'
+        ]
+        
+        main_content = None
+        for selector in content_selectors:
+            main_content = soup.select_one(selector)
+            if main_content:
+                print(f"📋 Found content using selector: {selector}")
+                break
         
         if main_content:
             content = main_content.get_text(separator=' ', strip=True)
-            print(f"📋 Found main content: {len(content)} characters")
+            print(f"📋 Extracted main content: {len(content)} characters")
+            print(f"🔍 Main content preview: {content[:200]}...")
         else:
-            # Fallback to full body
-            content = soup.get_text(separator=' ', strip=True)
-            print(f"📋 Using full page content: {len(content)} characters")
+            print(f"⚠️ No main content found, trying body...")
+            # Fallback to body content
+            body = soup.find('body')
+            if body:
+                content = body.get_text(separator=' ', strip=True)
+                print(f"📋 Using body content: {len(content)} characters")
+                print(f"🔍 Body content preview: {content[:200]}...")
+            else:
+                print(f"⚠️ No body found, using full page...")
+                # Last resort - full page
+                content = soup.get_text(separator=' ', strip=True)
+                print(f"📋 Using full page content: {len(content)} characters")
+                print(f"🔍 Full page preview: {content[:200]}...")
+        
+        # Clean up the content
+        import re
+        # Remove excessive whitespace
+        content = re.sub(r'\s+', ' ', content)
+        content = content.strip()
+        
+        # Check for JavaScript redirects or very short content
+        if len(content) < 100:
+            print(f"⚠️ Content is very short ({len(content)} chars), checking for redirects...")
+            
+            # Look for meta refresh or JavaScript redirects
+            meta_refresh = soup.find('meta', attrs={'http-equiv': 'refresh'})
+            if meta_refresh and meta_refresh.get('content'):
+                redirect_content = meta_refresh.get('content')
+                print(f"🔄 Found meta refresh: {redirect_content}")
+                
+                # Extract URL from content like "0; URL=https://example.com"
+                import re
+                url_match = re.search(r'URL=([^"\'>\s]+)', redirect_content, re.IGNORECASE)
+                if url_match:
+                    redirect_url = url_match.group(1)
+                    print(f"🔄 Attempting to follow redirect to: {redirect_url}")
+                    
+                    # Try to fetch the redirect URL
+                    try:
+                        redirect_response = requests.get(redirect_url, headers=headers, timeout=30, allow_redirects=True)
+                        if redirect_response.status_code == 200:
+                            redirect_soup = BeautifulSoup(redirect_response.content, 'html.parser')
+                            
+                            # Remove problematic elements
+                            for element in redirect_soup(["script", "style", "noscript", "nav", "header", "footer"]):
+                                element.decompose()
+                            
+                            redirect_content = redirect_soup.get_text(separator=' ', strip=True)
+                            redirect_content = re.sub(r'\s+', ' ', redirect_content).strip()
+                            
+                            if len(redirect_content) > len(content):
+                                print(f"✅ Redirect content is better ({len(redirect_content)} chars)")
+                                content = redirect_content
+                                title = redirect_soup.title.string.strip() if redirect_soup.title and redirect_soup.title.string else title
+                            else:
+                                print(f"⚠️ Redirect content not better ({len(redirect_content)} chars)")
+                    except Exception as e:
+                        print(f"❌ Failed to follow redirect: {e}")
+        
+        # Check if content looks like binary or encoded data
+        if len(content) > 0:
+            # Check for high ratio of non-printable or non-ASCII characters
+            printable_chars = sum(1 for c in content[:1000] if c.isprintable())
+            if len(content) > 100 and printable_chars / min(len(content), 1000) < 0.7:
+                print(f"⚠️ Content appears to be binary or encoded data")
+                content = "Content appears to be binary or encoded data and cannot be analyzed."
+            
+            print(f"🔍 Final content preview (first 200 chars): {content[:200]}...")
+        else:
+            print(f"⚠️ No text content extracted from page")
         
         # Clean up whitespace but preserve structure
         content = ' '.join(content.split())
@@ -206,7 +336,7 @@ async def summarize_text(request: TextRequest):
         
         # Call Anthropic API
         message = anthropic_client.messages.create(
-            model="claude-3-sonnet-20240229",
+            model="claude-3-5-sonnet-20241022",
             max_tokens=1000,
             temperature=0.3,
             messages=[
@@ -240,6 +370,198 @@ async def summarize_text(request: TextRequest):
              status_code=500, 
              detail=f"Error generating summary: {str(e)}"
          )
+
+
+@app.post("/analyze-terms", response_model=TermsAnalysisResponse)
+async def analyze_terms_with_llm(request: TermsAnalysisRequest):
+    """
+    Analyze text content to determine if it contains terms and conditions using LLM
+    """
+    try:
+        # Check if API key is configured
+        if not os.getenv("ANTHROPIC_API_KEY"):
+            raise HTTPException(
+                status_code=500, 
+                detail="Anthropic API key not configured. Please set ANTHROPIC_API_KEY in your .env file."
+            )
+        
+        # Create sophisticated prompt focused on T&C gotchas and consumer traps
+        prompt = f"""You are a consumer protection advocate and legal analyst specializing in identifying hidden traps, gotchas, and unfair terms in legal documents. Your mission is to protect users from being taken advantage of by companies through deceptive or one-sided terms.
+
+🚨 PRIMARY FOCUS: IDENTIFY GOTCHAS & TRAPS
+Your main goal is to find terms that could surprise, harm, or disadvantage the average user:
+
+1. HIDDEN GOTCHAS & TRAPS
+   - Automatic renewals with difficult cancellation
+   - Hidden fees or charges buried in text
+   - Broad data collection beyond what users expect
+   - Terms that allow unilateral changes without notice
+   - Clauses that waive important user rights
+   - Forced arbitration preventing class action lawsuits
+   - Broad content licensing that users don't realize they're granting
+   - Account termination triggers that are vague or unfair
+
+2. DECEPTIVE PRACTICES
+   - Important terms buried in dense legal text
+   - Misleading headings that don't match content
+   - Terms that contradict marketing promises
+   - Vague language that favors the company
+   - "Free" services with hidden costs or commitments
+   - Data usage beyond the stated purpose
+
+3. UNFAIR POWER IMBALANCES
+   - Company can change terms anytime, user cannot
+   - Company has broad termination rights, user has none
+   - All liability on user, company disclaims everything
+   - User must resolve disputes in company's preferred jurisdiction
+   - Company owns user-generated content permanently
+   - No compensation for service outages or data loss
+
+4. CONSUMER VULNERABILITY EXPLOITATION
+   - Terms that take advantage of user's lack of legal knowledge
+   - Clauses that are unreasonable for typical consumer use
+   - Rights that users think they have but actually don't
+   - Penalties or consequences disproportionate to violations
+   - Terms that lock users into long commitments they can't escape
+
+5. REGULATORY EVASION
+   - Terms that try to circumvent consumer protection laws
+   - Jurisdiction shopping to avoid user-friendly regulations
+   - Waiving rights that may not be legally waivable
+   - Data practices that push boundaries of privacy laws
+
+ANALYSIS CONTEXT:
+URL: {request.url or 'Not provided'}
+Page Title: {request.title or 'Not provided'}
+Content Length: {len(request.text)} characters
+
+CONTENT TO ANALYZE:
+{request.text[:12000]}{'...[content truncated for analysis]' if len(request.text) > 12000 else ''}
+
+🎯 ANALYSIS OUTPUT REQUIREMENTS:
+Focus your analysis on helping users avoid being taken advantage of. Prioritize identifying gotchas, traps, and unfair terms that could harm users.
+
+Provide your analysis as a JSON response with this exact structure:
+{{
+    "isTermsPage": boolean,
+    "confidence": number (0-100),
+    "documentType": "string (e.g., 'Terms of Service', 'Privacy Policy', 'User Agreement', 'Not Legal Document')",
+    "summary": "string (2-3 sentences focusing on the biggest gotchas and risks for users)",
+    "keyFindings": [
+        "string (specific gotchas or traps found - be very specific)",
+        "string (hidden costs, fees, or commitments)",
+        "string (rights users lose or don't realize they're giving up)"
+    ],
+    "riskLevel": "string (low/medium/high - err on side of caution for users)",
+    "riskFactors": [
+        "string (specific gotchas that could surprise users)",
+        "string (unfair terms that disadvantage consumers)",
+        "string (ways the company could exploit these terms)"
+    ],
+    "consumerProtections": [
+        "string (rare positive protections for users, if any exist)"
+    ],
+    "recommendations": [
+        "string (specific actions users should take to protect themselves)",
+        "string (what to watch out for or be careful about)",
+        "string (alternatives or workarounds if possible)"
+    ],
+    "complianceIndicators": {{
+        "gdpr": "string (compliant/partial/non-compliant/unclear)",
+        "ccpa": "string (compliant/partial/non-compliant/unclear)",
+        "plainLanguage": "string (good/fair/poor - is it deliberately confusing?)"
+    }},
+    "lastUpdated": "string (date if found, or 'not specified')",
+    "redFlags": [
+        "string (🚨 BIGGEST GOTCHAS - terms that could really hurt users)",
+        "string (hidden traps users won't notice until it's too late)",
+        "string (unfair terms that are particularly egregious)"
+    ]
+}}
+
+🚨 CRITICAL INSTRUCTIONS:
+- PRIORITIZE USER PROTECTION over legal technicalities
+- ASSUME users don't read fine print - what would surprise them?
+- IDENTIFY terms that companies hope users won't notice or understand
+- BE SPECIFIC - quote exact problematic language when possible
+- WARN about automatic renewals, hidden fees, data collection, etc.
+- HIGHLIGHT any terms that waive important rights
+- CONSIDER what could go wrong for the user in the worst case scenario
+
+Provide only the JSON response, no additional text:"""
+        
+        # Call Anthropic API
+        message = anthropic_client.messages.create(
+            model="claude-3-5-sonnet-20241022",  # Updated to correct model name
+            max_tokens=3000,  # Increased for comprehensive analysis
+            temperature=0.1,  # Lower temperature for more consistent analysis
+            messages=[
+                {
+                    "role": "user",
+                    "content": prompt
+                }
+            ]
+        )
+        
+        response_text = message.content[0].text.strip()
+        
+        # Try to extract JSON from the response
+        try:
+            # Look for JSON content between curly braces
+            import re
+            json_match = re.search(r'\{.*\}', response_text, re.DOTALL)
+            if json_match:
+                json_str = json_match.group()
+                analysis_result = json.loads(json_str)
+            else:
+                # Fallback parsing if no clear JSON structure
+                raise ValueError("No JSON found in response")
+                
+        except (json.JSONDecodeError, ValueError) as e:
+            print(f"Error parsing LLM response: {e}")
+            print(f"Raw response: {response_text}")
+            
+            # No fallbacks - raise an error for LLM-only approach
+            raise HTTPException(
+                status_code=500,
+                detail=f"LLM response parsing failed. Raw response was not in expected JSON format. Error: {str(e)}"
+            )
+        
+        return TermsAnalysisResponse(
+            isTermsPage=analysis_result.get("isTermsPage", False),
+            confidence=float(analysis_result.get("confidence", 0)),
+            documentType=analysis_result.get("documentType", "Unknown"),
+            summary=analysis_result.get("summary", "Analysis completed"),
+            keyFindings=analysis_result.get("keyFindings", []),
+            riskLevel=analysis_result.get("riskLevel", "unknown"),
+            riskFactors=analysis_result.get("riskFactors", []),
+            consumerProtections=analysis_result.get("consumerProtections", []),
+            recommendations=analysis_result.get("recommendations", []),
+            complianceIndicators=ComplianceIndicators(
+                gdpr=analysis_result.get("complianceIndicators", {}).get("gdpr", "unclear"),
+                ccpa=analysis_result.get("complianceIndicators", {}).get("ccpa", "unclear"),
+                plainLanguage=analysis_result.get("complianceIndicators", {}).get("plainLanguage", "fair")
+            ),
+            lastUpdated=analysis_result.get("lastUpdated", "not specified"),
+            redFlags=analysis_result.get("redFlags", []),
+            analysisMethod="llm_powered"
+        )
+        
+    except anthropic.AuthenticationError:
+        raise HTTPException(
+            status_code=401, 
+            detail="Invalid Anthropic API key. Please check your credentials."
+        )
+    except anthropic.RateLimitError:
+        raise HTTPException(
+            status_code=429, 
+            detail="Rate limit exceeded. Please try again later."
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Error analyzing terms: {str(e)}"
+        )
 
 
 @app.post("/search", response_model=SearchResponse)
