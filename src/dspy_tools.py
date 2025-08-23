@@ -173,7 +173,7 @@ class RedditSearcher(dspy.Module):
             )
     
     def _summarize_reddit_results(self, results: List[Dict], query: str) -> str:
-        """Summarize Reddit search results"""
+        """Summarize Reddit search results with full content"""
         if not results:
             return f"No Reddit discussions found for {query}"
         
@@ -187,10 +187,61 @@ class RedditSearcher(dspy.Module):
             
             summary += f"{i}. {title}\n"
             summary += f"   URL: {url}\n"
-            summary += f"   Description: {description[:200]}...\n\n"
+            
+            # Try to scrape full Reddit post content
+            full_content = self._scrape_reddit_post(url)
+            if full_content:
+                summary += f"   Full Content:\n   {'-' * 40}\n"
+                # Clean and format the content
+                clean_content = self._clean_reddit_content(full_content)
+                summary += f"   {clean_content}\n"
+                summary += f"   {'-' * 40}\n\n"
+            else:
+                # Fallback to description if scraping fails
+                summary += f"   Description: {description}\n\n"
         
         summary += f"\nTotal discussions found: {len(results)}\n"
         return summary
+    
+    def _scrape_reddit_post(self, url: str) -> str:
+        """Scrape full content from a Reddit post URL"""
+        try:
+            if not url or not url.startswith("https://www.reddit.com"):
+                return ""
+            
+            print(f"🔍 Scraping Reddit post: {url}")
+            
+            # Use the API client to scrape the Reddit post
+            data = {"url": url}
+            result = self.api_client.call_endpoint("/scrape", data)
+            
+            if "error" not in result and result.get("status") == "success":
+                content = result.get("content", "")
+                if content and len(content) > 50:  # Ensure we got meaningful content
+                    return content
+            
+            return ""
+            
+        except Exception as e:
+            print(f"⚠️ Error scraping Reddit post {url}: {str(e)}")
+            return ""
+    
+    def _clean_reddit_content(self, content: str) -> str:
+        """Clean and format Reddit content for better readability"""
+        if not content:
+            return ""
+        
+        # Remove excessive whitespace
+        content = ' '.join(content.split())
+        
+        # Truncate if too long but keep it substantial
+        if len(content) > 2000:
+            content = content[:2000] + "... [Content truncated - view full post at URL]"
+        
+        # Add line breaks for better readability in reports
+        content = content.replace('. ', '.\n   ')
+        
+        return content
 
 
 class CompanyAnalysisWorkflow(dspy.Module):
