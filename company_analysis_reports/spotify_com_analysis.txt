@@ -1,0 +1,82 @@
+COMPANY ANALYSIS REPORT
+Generated on: 2025-08-23 16:10:09
+Input: https://www.spotify.com
+Analysis Type: URL Scraping
+
+================================================================================
+
+SECTION 1: CONTENT ANALYSIS
+================================================================================
+
+Content Type: scraped_url
+Source URL: https://www.spotify.com/
+Status: success
+
+Content:
+----------------------------------------
+Spotify - Web Player: Music for everyoneTrending songsJealous Typeinfinite sourcei wish i knew how to quit youClockworkBox Me Up (feat. Jelly Roll)We're Onto Something (feat. Zach Bryan)Call On MeDifferent Species (feat. Gunna)CEREMONYSacrificeGreat PretenderI Don't Care...Drum Showgsw vs sacMr. MiracleEverybody Screamwho’s your boyfriendPhantomJust Two GirlsSE LO JURO MORPopular artistsKendrick LamarDrakeThe WeekndMorgan WallenPost MaloneRihannaLady GagaBillie EilishTaylor SwiftKanye WestTyler, The CreatorFleetwood MacHozierSZALil WayneSabrina CarpenterEminemColdplayFutureBeyoncéPopular albums and singlesI’m The ProblemDeBÍ TiRAR MáS FOToS10 Hours of Continuous Rain Sounds for SleepingHIT ME HARD AND SOFTGNX$ome $exy $ongs 4 UMUSICHamilton (Original Broadway Cast Recording)Even In ArcadiaShort n' SweetCHROMAKOPIABlondeBest White Noise For Sleeping BabyHurry Up TomorrowreputationUn Verano Sin TiSubmarineSOSThe Rise and Fall of a Midwest PrincessMi Vida Mi MuertePopular radioMorgan Wall...
+
+================================================================================
+
+SECTION 2: REDDIT DISCUSSIONS & SENTIMENT
+================================================================================
+
+Status: success
+
+Reddit Discussions about spotify:
+==================================================
+
+1. r/spotify on Reddit: Spotify is down right now
+   URL: https://www.reddit.com/r/spotify/comments/1mv7oq4/spotify_is_down_right_now/
+   Description: 145 votes, 67 comments. 3M subscribers in the <strong>spotify</strong> community. This subreddit is mainly for sharing <strong>Spotify</strong> playlists. Share yours here! You must have a combined ka...
+
+2. r/Music on Reddit: Anyone else just... done with Spotify?
+   URL: https://www.reddit.com/r/Music/comments/1mn7dwx/anyone_else_just_done_with_spotify/
+   Description: 7.6K votes, 2.3K comments. 90&#x27;s kid here... Lately I’ve been wondering if I’m the only one who feels this way. <strong>Spotify</strong> keeps raising prices, artists…...
+
+3. r/apple on Reddit: Spotify copies Apple Music’s AutoMix feature before iOS 26 even ships
+   URL: https://www.reddit.com/r/apple/comments/1mumas0/spotify_copies_apple_musics_automix_feature/
+   Description: 2.9K votes, 396 comments. <strong>Spotify</strong> is introducing a new feature that allows Premium users to create unique transitions between playlist songs. The…...
+
+4. r/spotify on Reddit: is spotify worth it?
+   URL: https://www.reddit.com/r/spotify/comments/1mma546/is_spotify_worth_it/
+   Description: 3M subscribers in the <strong>spotify</strong> community. This subreddit is mainly for sharing <strong>Spotify</strong> playlists. Share yours here! You must have a combined karma of 40 to post, and y...
+
+5. r/LetsTalkMusic on Reddit: Is Spotify on its way out?
+   URL: https://www.reddit.com/r/LetsTalkMusic/comments/1mdghu6/is_spotify_on_its_way_out/
+   Description: 584 votes, 359 comments. I’ve seen people online and in the news talk about these issues recently: Artists such as KGATLW and Xiu Xiu pulling their…...
+
+6. r/spotify on Reddit: What is the best way to discover new music on Spotify without listening to whole albums?
+   URL: https://www.reddit.com/r/spotify/comments/1miysp6/what_is_the_best_way_to_discover_new_music_on/
+   Description: 12 votes, 41 comments. My playlist is getting old and im looking for new music but I&#x27;m not willing to sift through whole albums. Also tye random…...
+
+7. Spotify
+   URL: https://www.reddit.com/r/spotify/
+   Description: This subreddit is mainly for sharing <strong>Spotify</strong> playlists. Share yours here! You must have a combined karma of 40 to post, and Reddit account age at least 30 days old; this is to prevent...
+
+8. r/indieheads on Reddit: Hotline TNT removing their music from Spotify
+   URL: https://www.reddit.com/r/indieheads/comments/1mxak5b/hotline_tnt_removing_their_music_from_spotify/
+   Description: 1.3K votes, 275 comments. 3.6M subscribers in the indieheads community. Reddit’s largest community for alternative, experimental, independent, and underground music....
+
+9. r/spotify on Reddit: Why do you use Spotify?
+   URL: https://www.reddit.com/r/spotify/comments/1l6qi3c/why_do_you_use_spotify/
+   Description: 82 votes, 248 comments. I&#x27;m an Apple Music user and I&#x27;ve tried <strong>Spotify</strong> since it&#x27;s the most used platform worldwide, with 600Million or so, but I…...
+
+10. r/Python on Reddit: Potty - A CLI tool to download Spotify and youtube music using yt-dlp
+   URL: https://www.reddit.com/r/Python/comments/1mp7nd1/potty_a_cli_tool_to_download_spotify_and_youtube/
+   Description: Hey everyone! I just released Potty, my new Python-based command-line tool for downloading and managing music from <strong>Spotify</strong> &amp; YouTube using yt-dlp…...
+
+
+Total discussions found: 10
+
+
+================================================================================
+
+SUMMARY
+================================================================================
+
+Analysis Type: URL Scraping
+Content Status: success
+Reddit Search Status: success
+Total Reddit Results: 10
+Generated: 2025-08-23 16:10:09

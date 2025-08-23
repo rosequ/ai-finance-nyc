@@ -1,0 +1,95 @@
+COMPANY ANALYSIS REPORT
+Generated on: 2025-08-23 16:07:27
+Query: Tesla
+Company: N/A
+Product: N/A
+
+================================================================================
+
+SECTION 1: CONTENT ANALYSIS
+================================================================================
+
+Content Type: terms_and_conditions
+Source URL: https://contracts.justia.com/companies/tesla-1279/contract/404587/
+Status: success
+
+Content:
+----------------------------------------
+Log In
+Sign Up
+Find a Lawyer Ask a Lawyer Research the Law Law Schools Laws & Regs Newsletters Marketing Solutions
+Justia  Forms  Business Contracts  Tesla  General Terms and Conditions Agreement between Tesla Motors,
+General Terms and Conditions Agreement between Tesla Motors, Inc. and Panasonic Corporation (October 1, 2014)
+Contract Categories: Business Operations › Supply Agreements
+Summary
+
+This agreement sets out the terms under which Tesla Motors, Inc. engages Panasonic Corporation to develop, supply, and support products for use in Tesla's products. Panasonic will also lease space within Tesla's manufacturing facility. The contract covers production planning, order processes, and the obligations of both parties regarding forecasts, purchase orders, and production meetings. It specifies how orders are placed, accepted, and adjusted, and outlines the process for investment in manufacturing property. The agreement is effective as of October 1, 2014, and governs the ongoing business...
+
+================================================================================
+
+SECTION 2: REDDIT DISCUSSIONS & SENTIMENT
+================================================================================
+
+Status: success
+
+Reddit Discussions about Tesla:
+==================================================
+
+1. r/electricvehicles on Reddit: Tesla leads price cuts as US EV sales post 2nd-best month ever
+   URL: https://www.reddit.com/r/electricvehicles/comments/1mr0bhy/tesla_leads_price_cuts_as_us_ev_sales_post/
+   Description: 513 votes, 195 comments. 364K subscribers in the electricvehicles community. The future of sustainable transportation is here! This is the Reddit community for EV owners and enthusiasts. Join and Disc...
+
+2. r/electricvehicles on Reddit: Tesla raises Model S/X prices by $10k in the U.S, but adds ‘Luxe Package’ including Full Self-Driving (Supervised) and Lifetime Supercharging
+   URL: https://www.reddit.com/r/electricvehicles/comments/1mspj9a/tesla_raises_model_sx_prices_by_10k_in_the_us_but/
+   Description: 205 votes, 120 comments. 363K subscribers in the electricvehicles community. The future of sustainable transportation is here! This is the Reddit community for EV owners and enthusiasts. Join and Disc...
+
+3. r/teslamotors on Reddit: Tesla new affordable Model is a model Y striped down (more info in the comments)
+   URL: https://www.reddit.com/r/teslamotors/comments/1ma3kl0/tesla_new_affordable_model_is_a_model_y_striped/
+   Description: 510 votes, 227 comments. 3.4M subscribers in the teslamotors community. The original and largest <strong>Tesla</strong> community on Reddit! An unofficial forum of owners and enthusiasts. See r/TeslaL...
+
+4. r/electricvehicles on Reddit: Tesla’s Cybertruck Is a Bust
+   URL: https://www.reddit.com/r/electricvehicles/comments/1m0yxaq/teslas_cybertruck_is_a_bust/
+   Description: 827 votes, 515 comments. 364K subscribers in the electricvehicles community. The future of sustainable transportation is here! This is the Reddit community for EV owners and enthusiasts. Join and Disc...
+
+5. r/electricvehicles on Reddit: Tesla officially launches Model YL with 6 seats, starting at ~$47,000
+   URL: https://www.reddit.com/r/electricvehicles/comments/1mu6nls/tesla_officially_launches_model_yl_with_6_seats/
+   Description: 52 votes, 95 comments. 364K subscribers in the electricvehicles community. The future of sustainable transportation is here! This is the Reddit community for EV owners and enthusiasts. Join and Discus...
+
+6. r/SelfDrivingCars on Reddit: Tesla shows FSD Supervised do 362 mi drive from SF Bay LA hands-free
+   URL: https://www.reddit.com/r/SelfDrivingCars/comments/1mopxhz/tesla_shows_fsd_supervised_do_362_mi_drive_from/
+   Description: 59 votes, 149 comments. 102K subscribers in the SelfDrivingCars community. News and discussion about Autonomous Vehicles and Advanced Driving Assistance Systems (ADAS)....
+
+7. r/electricvehicles on Reddit: Elon Musk’s Self-Driving Tesla Lies Are Finally Catching Up To Him
+   URL: https://www.reddit.com/r/electricvehicles/comments/1mw7a0f/elon_musks_selfdriving_tesla_lies_are_finally/
+   Description: 1.1K votes, 239 comments. 364K subscribers in the electricvehicles community. The future of sustainable transportation is here! This is the Reddit community for EV owners and enthusiasts. Join and Dis...
+
+8. r/SelfDrivingCars on Reddit: MKBHD - Investigating the Tesla Robotaxi!
+   URL: https://www.reddit.com/r/SelfDrivingCars/comments/1mlb8dq/mkbhd_investigating_the_tesla_robotaxi/
+   Description: 67 votes, 221 comments. Overall, I thought it was a good &amp; balanced video showcasing a (somewhat) outside perspective on the current landscape....
+
+9. r/TeslaLounge on Reddit: Tesla Lease End..
+   URL: https://www.reddit.com/r/TeslaLounge/comments/1mwcd16/tesla_lease_end/
+   Description: 84 votes, 147 comments. Is this automated? For one, I do not have 3K worth of wear on my rims. The were dirty when I took the photos, so I am sure…...
+
+10. r/electricvehicles on Reddit: It Looks Like the Tesla Model Y Refresh Has Bombed
+   URL: https://www.reddit.com/r/electricvehicles/comments/1m7hsnx/it_looks_like_the_tesla_model_y_refresh_has_bombed/
+   Description: 313 votes, 376 comments. The Model Y refresh and the Cybertruck have been significant failures. How many bad launches can <strong>Tesla</strong> have, assuming they…...
+
+
+Total discussions found: 10
+
+
+================================================================================
+
+SUMMARY
+================================================================================
+
+This report contains:
+1. Terms And Conditions from https://contracts.justia.com/companies/tesla-1279/contract/404587/
+2. Reddit community discussions and sentiment analysis
+3. Generated on 2025-08-23 16:07:27
+
+Content Status: success
+Reddit Search Status: success
+
+Total Reddit Results: 10
