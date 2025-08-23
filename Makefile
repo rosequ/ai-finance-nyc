@@ -26,3 +26,9 @@ clean: ## Clean up cache and temporary files
 
 run: ## Run the main application
 	uv run python src/main.py
+
+server: ## Run the FastAPI server
+	uv run python src/api.py
+
+dev-server: ## Run the FastAPI server in development mode
+	uv run uvicorn src.api:app --reload --host 0.0.0.0 --port 8000
