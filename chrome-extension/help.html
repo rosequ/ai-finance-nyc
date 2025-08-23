@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms & Conditions Analyzer - Help</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 40px;
+            background: #f8f9fa;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #007bff;
+            border-bottom: 3px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #495057;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+        h3 {
+            color: #6c757d;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        .feature-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+        .feature-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        .alert {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 20px 0;
+        }
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            color: #856404;
+        }
+        .steps {
+            background: #e7f3ff;
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .steps ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .shortcuts {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 6px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .shortcuts table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .shortcuts th,
+        .shortcuts td {
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .shortcuts th {
+            background: #e9ecef;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📋 Terms & Conditions Analyzer - Help Guide</h1>
+        
+        <div class="alert">
+            <strong>Welcome!</strong> This extension helps you analyze terms and conditions on any webpage using AI-powered analysis tools.
+        </div>
+
+        <h2>🚀 Getting Started</h2>
+        
+        <div class="steps">
+            <h3>Quick Setup</h3>
+            <ol>
+                <li>Ensure the backend API server is running on <span class="code">http://localhost:8000</span></li>
+                <li>Look for the 📋 icon in your Chrome toolbar</li>
+                <li>Click the icon to open the analyzer popup</li>
+                <li>Click "Analyze Current Page" to get started!</li>
+            </ol>
+        </div>
+
+        <h2>✨ Features</h2>
+
+        <div class="feature-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🔍</div>
+                <h3>Page Analysis</h3>
+                <p>Automatically detects if the current page contains terms and conditions with confidence scoring.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🌐</div>
+                <h3>URL Analysis</h3>
+                <p>Analyze any URL for terms and conditions content by entering the URL manually.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🏢</div>
+                <h3>Company Search</h3>
+                <p>Find terms and conditions for any company using intelligent search algorithms.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>Term Highlighting</h3>
+                <p>Highlight relevant terms and phrases directly on the webpage for easy identification.</p>
+            </div>
+        </div>
+
+        <h2>🎮 How to Use</h2>
+
+        <h3>1. Analyzing the Current Page</h3>
+        <div class="steps">
+            <ol>
+                <li>Navigate to any webpage</li>
+                <li>Click the extension icon (📋)</li>
+                <li>Click "Analyze Current Page"</li>
+                <li>Review the analysis results and confidence score</li>
+                <li>Use "Highlight Terms" to mark relevant phrases</li>
+            </ol>
+        </div>
+
+        <h3>2. Analyzing Custom URLs</h3>
+        <div class="steps">
+            <ol>
+                <li>Open the extension popup</li>
+                <li>Enter a URL in the "Analyze Custom URL" field</li>
+                <li>Click the "Analyze" button</li>
+                <li>Wait for the analysis to complete</li>
+            </ol>
+        </div>
+
+        <h3>3. Finding Company Terms</h3>
+        <div class="steps">
+            <ol>
+                <li>Open the extension popup</li>
+                <li>Enter a company name (e.g., "Netflix", "Google")</li>
+                <li>Click "Find Terms"</li>
+                <li>The extension will search for and analyze the company's terms</li>
+            </ol>
+        </div>
+
+        <h2>⚙️ Settings</h2>
+
+        <p>Click the ⚙️ icon in the popup to access settings:</p>
+        
+        <ul>
+            <li><strong>API Base URL:</strong> Configure your backend server URL (default: http://localhost:8000)</li>
+            <li><strong>Auto-analyze pages:</strong> Automatically analyze pages when you visit them</li>
+            <li><strong>Show analysis overlay:</strong> Display visual overlays with analysis results</li>
+        </ul>
+
+        <h2>⌨️ Keyboard Shortcuts</h2>
+
+        <div class="shortcuts">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Shortcut</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="code">Ctrl/Cmd + Enter</span></td>
+                        <td>Analyze current page</td>
+                    </tr>
+                    <tr>
+                        <td><span class="code">Ctrl/Cmd + H</span></td>
+                        <td>Highlight terms on page</td>
+                    </tr>
+                    <tr>
+                        <td><span class="code">Enter</span></td>
+                        <td>Submit forms (URL or company search)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h2>🔧 Troubleshooting</h2>
+
+        <h3>Common Issues</h3>
+
+        <div class="warning alert">
+            <strong>API Offline Status</strong><br>
+            If you see "API Offline" in the extension:
+            <ul>
+                <li>Make sure the backend server is running: <span class="code">make dev-server</span></li>
+                <li>Check that the API URL is correct in settings</li>
+                <li>Verify your API keys are configured in the backend</li>
+            </ul>
+        </div>
+
+        <h4>Analysis Not Working</h4>
+        <ul>
+            <li>Ensure the page has loaded completely</li>
+            <li>Check if the page has meaningful content (not just images/videos)</li>
+            <li>Try refreshing the page and analyzing again</li>
+            <li>Look for error messages in the browser console (F12)</li>
+        </ul>
+
+        <h4>Highlighting Not Visible</h4>
+        <ul>
+            <li>Ensure analysis found terms indicators</li>
+            <li>Try scrolling down to see highlighted terms</li>
+            <li>Some websites may prevent content modification</li>
+            <li>Refresh the page to remove old highlights</li>
+        </ul>
+
+        <h4>Extension Not Loading</h4>
+        <ul>
+            <li>Check <span class="code">chrome://extensions/</span> to ensure it's enabled</li>
+            <li>Try reloading the extension</li>
+            <li>Ensure all extension files are present</li>
+            <li>Check the extension console for errors</li>
+        </ul>
+
+        <h2>🔒 Privacy & Security</h2>
+
+        <ul>
+            <li><strong>No Data Collection:</strong> The extension doesn't collect or store personal data</li>
+            <li><strong>Local Processing:</strong> Analysis happens via your own API server</li>
+            <li><strong>Secure Communication:</strong> All API calls use secure protocols</li>
+            <li><strong>Limited Permissions:</strong> Only requests necessary Chrome permissions</li>
+        </ul>
+
+        <h2>🎯 Understanding Results</h2>
+
+        <h3>Confidence Scores</h3>
+        <ul>
+            <li><strong>90-100%:</strong> Very likely to be terms and conditions</li>
+            <li><strong>70-89%:</strong> Probably contains terms content</li>
+            <li><strong>50-69%:</strong> May contain some legal language</li>
+            <li><strong>Below 50%:</strong> Unlikely to be terms and conditions</li>
+        </ul>
+
+        <h3>Indicator Types</h3>
+        <ul>
+            <li><strong>Content Indicators:</strong> Terms-related phrases found in page text</li>
+            <li><strong>URL Indicators:</strong> Terms-related patterns in the website URL</li>
+            <li><strong>Weight:</strong> Importance score for each indicator (higher = more significant)</li>
+        </ul>
+
+        <h2>🛠️ Technical Requirements</h2>
+
+        <div class="alert">
+            <strong>Backend Server Required:</strong><br>
+            This extension requires the AI Finance NYC backend server to be running. The server provides:
+            <ul>
+                <li>Web scraping capabilities</li>
+                <li>AI-powered content analysis</li>
+                <li>Intelligent search functionality</li>
+                <li>Terms and conditions discovery</li>
+            </ul>
+        </div>
+
+        <h3>API Endpoints</h3>
+        <ul>
+            <li><span class="code">GET /</span> - Health check</li>
+            <li><span class="code">POST /scrape</span> - URL content extraction</li>
+            <li><span class="code">POST /terms-and-conditions</span> - Terms discovery</li>
+            <li><span class="code">POST /search</span> - Web search</li>
+        </ul>
+
+        <h2>📊 Need More Help?</h2>
+
+        <p>If you're still having issues:</p>
+        <ul>
+            <li>Check the extension console for detailed error messages</li>
+            <li>Verify the backend server is responding at <span class="code">http://localhost:8000</span></li>
+            <li>Ensure all API keys are properly configured</li>
+            <li>Try testing with a known terms and conditions page</li>
+        </ul>
+
+        <div class="alert">
+            <strong>Happy Analyzing!</strong> The extension is designed to make terms and conditions analysis quick and easy. Explore different features and settings to find what works best for your workflow.
+        </div>
+    </div>
+</body>
+</html>
