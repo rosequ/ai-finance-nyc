@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Markdown Formatting</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-box { border: 1px solid #ccc; padding: 15px; margin: 10px 0; }
+        .risk-badge { padding: 2px 6px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+        .risk-HIGH { background: #f8d7da; color: #721c24; }
+        .risk-MEDIUM { background: #fff3cd; color: #856404; }
+        .risk-LOW { background: #d4edda; color: #155724; }
+        .pro-con-label { color: #007cff; }
+        .impact-label { color: #dc3545; }
+        ul { list-style: none; padding-left: 0; }
+        li { margin-bottom: 8px; padding-left: 20px; position: relative; }
+        li:before { content: "•"; color: #007cff; font-weight: bold; position: absolute; left: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Markdown Formatting Test</h1>
+    
+    <div class="test-box">
+        <h3>Original Text:</h3>
+        <pre>**Key Points:** • This is a **loan referral service**, not a direct lender
+• **Pro:** Same-day funding available • **Con:** Lenders may perform hard credit checks
+**[HIGH]** No disclosed interest rates or fees **Impact:** A $500 loan could cost you $1,500+</pre>
+    </div>
+    
+    <div class="test-box">
+        <h3>Formatted Result:</h3>
+        <div id="formatted-result"></div>
+    </div>
+
+    <script>
+        function formatMarkdown(text) {
+            if (!text) return '';
+            
+            // Split into sections to handle different formatting
+            let formatted = text
+                // Convert **bold** to <strong> (handle nested formatting)
+                .replace(/\*\*([^*]+(?:\*[^*]*\*[^*]*)*)\*\*/g, '<strong>$1</strong>')
+                // Handle bullet points at start of lines
+                .replace(/^[\s]*[•\-\*]\s+(.+)$/gm, '<li>$1</li>')
+                // Handle numbered lists
+                .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
+                // Convert double line breaks to paragraph breaks
+                .replace(/\n\s*\n/g, '|||PARAGRAPH|||')
+                // Convert single line breaks to <br>
+                .replace(/\n/g, '<br>')
+                // Restore paragraph breaks
+                .replace(/\|\|\|PARAGRAPH\|\|\|/g, '</p><p>')
+                // Handle **[RISK LEVEL]** patterns specially
+                .replace(/\*\*\[([^\]]+)\]\*\*/g, '<span class="risk-badge risk-$1"><strong>[$1]</strong></span>')
+                // Handle **Pro:** and **Con:** specially  
+                .replace(/\*\*(Pro|Con):\*\*/g, '<strong class="pro-con-label">$1:</strong>')
+                // Handle **Impact:** specially
+                .replace(/\*\*Impact:\*\*/g, '<strong class="impact-label">Impact:</strong>');
+            
+            // Wrap consecutive list items in <ul> tags
+            formatted = formatted.replace(/(<li>.*?<\/li>)(\s*<li>.*?<\/li>)*/gs, function(match) {
+                return '<ul>' + match + '</ul>';
+            });
+            
+            // Wrap everything in paragraphs if not already wrapped
+            if (!formatted.includes('<p>') && !formatted.includes('<ul>')) {
+                formatted = '<p>' + formatted + '</p>';
+            } else if (!formatted.startsWith('<p>') && !formatted.startsWith('<ul>')) {
+                formatted = '<p>' + formatted;
+            }
+            
+            if (!formatted.endsWith('</p>') && !formatted.endsWith('</ul>')) {
+                formatted = formatted + '</p>';
+            }
+            
+            return formatted
+                // Clean up empty paragraphs
+                .replace(/<p><\/p>/g, '')
+                .replace(/<p>\s*<\/p>/g, '')
+                .replace(/<p>(<ul>.*?<\/ul>)<\/p>/gs, '$1')
+                // Fix spacing issues
+                .replace(/<\/li><br>/g, '</li>')
+                .replace(/<br><li>/g, '<li>')
+                .trim();
+        }
+
+        const testText = `**Key Points:** • This is a **loan referral service**, not a direct lender
+• **Pro:** Same-day funding available • **Con:** Lenders may perform hard credit checks
+**[HIGH]** No disclosed interest rates or fees **Impact:** A $500 loan could cost you $1,500+`;
+
+        document.getElementById('formatted-result').innerHTML = formatMarkdown(testText);
+    </script>
+</body>
+</html>

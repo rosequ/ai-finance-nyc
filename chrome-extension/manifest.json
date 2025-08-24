@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "AI Terms & Conditions Analyzer",
+  "name": "Personal Financial Advisor",
   "version": "1.0",
-  "description": "AI-powered analysis of terms and conditions using financial product expertise",
+  "description": "AI-powered personal financial advisor for analyzing terms and conditions",
   "permissions": [
     "activeTab"
   ],
@@ -11,7 +11,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Analyze Terms & Conditions"
+    "default_title": "Personal Financial Advisor"
   },
   "content_scripts": [
     {

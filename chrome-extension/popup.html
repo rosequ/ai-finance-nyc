@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Terms & Conditions Analyzer</title>
+    <title>Personal Financial Advisor</title>
     <style>
         body {
             width: 450px;
@@ -183,7 +183,7 @@
         
         .analysis-content {
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.6;
             color: #444;
         }
         
@@ -195,11 +195,71 @@
         
         .analysis-content ul {
             margin: 8px 0;
-            padding-left: 20px;
+            padding-left: 0;
+            list-style: none;
         }
         
         .analysis-content li {
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .analysis-content li:before {
+            content: "•";
+            color: #007cff;
+            font-weight: bold;
+            position: absolute;
+            left: 8px;
+        }
+        
+        .analysis-content strong {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .analysis-content em {
+            font-style: italic;
+            color: #666;
+        }
+        
+        .analysis-content p {
+            margin: 8px 0;
+        }
+        
+        .analysis-content br {
+            line-height: 1.8;
+        }
+        
+        .risk-badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        
+        .risk-HIGH {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .risk-MEDIUM {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .risk-LOW {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .pro-con-label {
+            color: #007cff;
+        }
+        
+        .impact-label {
+            color: #dc3545;
         }
         
         .reddit-insights {
@@ -251,8 +311,8 @@
 </head>
 <body>
     <div class="header">
-        <h1>🤖 AI Terms & Conditions Analyzer</h1>
-        <div class="subtitle">Powered by Financial Product AI</div>
+        <h1>💼 Personal Financial Advisor</h1>
+        <div class="subtitle">Powered by CURA</div>
     </div>
     
     <div class="content">
@@ -262,7 +322,7 @@
         </div>
         
         <button class="analyze-btn" id="analyze-btn">
-            🔍 Analyze Terms & Conditions
+            🔍 Get Financial Analysis
         </button>
         
         <div class="loading" id="loading">

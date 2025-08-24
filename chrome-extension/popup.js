@@ -1,7 +1,7 @@
 // Enhanced popup script for AI Terms & Conditions Analyzer
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('AI Terms & Conditions Analyzer popup loaded');
+    console.log('Personal Financial Advisor popup loaded');
     
     // Configuration
     const API_BASE_URL = 'http://localhost:8000';
@@ -187,22 +187,22 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Consumer Score
             if (analysis.consumer_score) {
-                termsHtml += `<div style="margin-bottom: 15px;"><strong>Consumer Score:</strong><br>${analysis.consumer_score}</div>`;
+                termsHtml += `<div style="margin-bottom: 15px;"><strong>Consumer Score:</strong><br>${formatMarkdown(analysis.consumer_score)}</div>`;
             }
             
             // Key Information
             if (analysis.key_information) {
-                termsHtml += `<h4>📋 Key Information</h4><div>${analysis.key_information}</div>`;
+                termsHtml += `<h4>📋 Key Information</h4><div>${formatMarkdown(analysis.key_information)}</div>`;
             }
             
             // Risks
             if (analysis.risks) {
-                termsHtml += `<h4>⚠️ Risks & Concerns</h4><div>${analysis.risks}</div>`;
+                termsHtml += `<h4>⚠️ Risks & Concerns</h4><div>${formatMarkdown(analysis.risks)}</div>`;
             }
             
             // Details
             if (analysis.details) {
-                termsHtml += `<h4>📖 Additional Details</h4><div>${analysis.details}</div>`;
+                termsHtml += `<h4>📖 Additional Details</h4><div>${formatMarkdown(analysis.details)}</div>`;
             }
             
             elements.termsAnalysis.innerHTML = termsHtml;
@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 redditHtml += `
                     <div class="insight-box insight-positive">
                         <div class="insight-title">👍 Positive Feedback</div>
-                        <div>${insights.positive}</div>
+                        <div>${formatMarkdown(insights.positive)}</div>
                     </div>
                 `;
             }
@@ -226,7 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 redditHtml += `
                     <div class="insight-box insight-negative">
                         <div class="insight-title">👎 Concerns & Issues</div>
-                        <div>${insights.negative}</div>
+                        <div>${formatMarkdown(insights.negative)}</div>
                     </div>
                 `;
             }
@@ -252,7 +252,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function hideLoading() {
         elements.loading.style.display = 'none';
         elements.analyzeBtn.disabled = false;
-        elements.analyzeBtn.textContent = '🔍 Analyze Terms & Conditions';
+        elements.analyzeBtn.textContent = '🔍 Get Financial Analysis';
     }
     
     function showError(message) {
@@ -277,5 +277,56 @@ document.addEventListener('DOMContentLoaded', function() {
         const dotElement = statusElement.querySelector('.status-dot');
         
         statusElement.innerHTML = `<span class="status-dot status-${type}"></span>${message}`;
+    }
+    
+    function formatMarkdown(text) {
+        if (!text) return '';
+        
+        // Split into sections to handle different formatting
+        let formatted = text
+            // Convert **bold** to <strong> (handle nested formatting)
+            .replace(/\*\*([^*]+(?:\*[^*]*\*[^*]*)*)\*\*/g, '<strong>$1</strong>')
+            // Handle bullet points at start of lines
+            .replace(/^[\s]*[•\-\*]\s+(.+)$/gm, '<li>$1</li>')
+            // Handle numbered lists
+            .replace(/^\d+\.\s+(.+)$/gm, '<li>$1</li>')
+            // Convert double line breaks to paragraph breaks
+            .replace(/\n\s*\n/g, '|||PARAGRAPH|||')
+            // Convert single line breaks to <br>
+            .replace(/\n/g, '<br>')
+            // Restore paragraph breaks
+            .replace(/\|\|\|PARAGRAPH\|\|\|/g, '</p><p>')
+            // Handle **[RISK LEVEL]** patterns specially
+            .replace(/\*\*\[([^\]]+)\]\*\*/g, '<span class="risk-badge risk-$1"><strong>[$1]</strong></span>')
+            // Handle **Pro:** and **Con:** specially  
+            .replace(/\*\*(Pro|Con):\*\*/g, '<strong class="pro-con-label">$1:</strong>')
+            // Handle **Impact:** specially
+            .replace(/\*\*Impact:\*\*/g, '<strong class="impact-label">Impact:</strong>');
+        
+        // Wrap consecutive list items in <ul> tags
+        formatted = formatted.replace(/(<li>.*?<\/li>)(\s*<li>.*?<\/li>)*/gs, function(match) {
+            return '<ul>' + match + '</ul>';
+        });
+        
+        // Wrap everything in paragraphs if not already wrapped
+        if (!formatted.includes('<p>') && !formatted.includes('<ul>')) {
+            formatted = '<p>' + formatted + '</p>';
+        } else if (!formatted.startsWith('<p>') && !formatted.startsWith('<ul>')) {
+            formatted = '<p>' + formatted;
+        }
+        
+        if (!formatted.endsWith('</p>') && !formatted.endsWith('</ul>')) {
+            formatted = formatted + '</p>';
+        }
+        
+        return formatted
+            // Clean up empty paragraphs
+            .replace(/<p><\/p>/g, '')
+            .replace(/<p>\s*<\/p>/g, '')
+            .replace(/<p>(<ul>.*?<\/ul>)<\/p>/gs, '$1')
+            // Fix spacing issues
+            .replace(/<\/li><br>/g, '</li>')
+            .replace(/<br><li>/g, '<li>')
+            .trim();
     }
 });

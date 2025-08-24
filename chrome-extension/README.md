@@ -1,4 +1,4 @@
-# AI Terms & Conditions Analyzer - Chrome Extension
+# Personal Financial Advisor - Chrome Extension
 
 ## Installation
 
@@ -17,9 +17,9 @@
 
 ## Usage
 
-1. Navigate to any webpage with terms & conditions
-2. Click the extension icon in the Chrome toolbar
-3. Click "🔍 Analyze Terms & Conditions"
+1. Navigate to any webpage with financial terms & conditions
+2. Click the extension icon in the Chrome toolbar  
+3. Click "🔍 Get Financial Analysis"
 4. Wait for AI analysis to complete
 5. View comprehensive results including:
    - Product information
