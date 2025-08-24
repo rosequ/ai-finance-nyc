@@ -16,6 +16,8 @@ import anthropic
 from dotenv import load_dotenv
 from playwright.async_api import async_playwright
 import PyPDF2
+from src.analyzer import FinancialProductAnalyzer
+from src.content_reader import ContentReader
 
 # Load environment variables
 load_dotenv()
@@ -72,6 +74,20 @@ class TermsAndConditionsResponse(BaseModel):
     terms_url: str
     content: str
     file_path: str
+    status: str
+
+class FinancialProductAnalysisRequest(BaseModel):
+    source: str  # Can be a URL, file path, or raw text content
+    source_type: Optional[str] = None  # 'pdf', 'url', 'html', 'text', or None for auto-detection
+
+class FinancialProductAnalysisResponse(BaseModel):
+    product_name: str
+    product_type: str
+    key_information: str
+    risks: str
+    details: str
+    source: str
+    source_length: int
     status: str
 
 
@@ -815,6 +831,120 @@ async def try_direct_company_urls(request: TermsAndConditionsRequest, p):
 
 
 
+
+
+@app.post("/analyze-financial-product", response_model=FinancialProductAnalysisResponse)
+async def analyze_financial_product(request: FinancialProductAnalysisRequest):
+    """
+    Analyze financial product information using the two-step analysis process.
+    This endpoint replicates the functionality of the main() function from analyzer.py
+    """
+    try:
+        print(f"🔍 Starting financial product analysis...")
+        print(f"📄 Source: {request.source}")
+        print(f"📊 Source type: {request.source_type or 'auto-detect'}")
+        
+        # Step 1: Read content from the source
+        print("📄 Step 1: Reading content from source...")
+        content_reader = ContentReader()
+        
+        try:
+            input_text = content_reader.read_content(request.source, request.source_type)
+        except Exception as e:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Failed to read content from source: {str(e)}"
+            )
+        
+        if not input_text or len(input_text.strip()) < 100:
+            raise HTTPException(
+                status_code=400,
+                detail="Insufficient content extracted from source (less than 100 characters)"
+            )
+        
+        print(f"✅ Content read successfully!")
+        print(f"📊 Input text length: {len(input_text)} characters")
+        print(f"📄 First 200 characters: {input_text[:200]}...")
+        
+        # Step 2: Initialize analyzer and analyze the content
+        print("🔍 Step 2: Initializing financial product analyzer...")
+        
+        # Check if Anthropic API key is configured
+        if not os.getenv("ANTHROPIC_API_KEY"):
+            raise HTTPException(
+                status_code=500,
+                detail="Anthropic API key not configured. Please set ANTHROPIC_API_KEY in your .env file."
+            )
+        
+        try:
+            analyzer = FinancialProductAnalyzer()
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Failed to initialize analyzer: {str(e)}"
+            )
+        
+        # Step 3: Analyze the financial product
+        print("📋 Step 3: Analyzing financial product...")
+        
+        try:
+            result = analyzer.analyze_financial_product(input_text)
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Analysis failed: {str(e)}"
+            )
+        
+        # Step 4: Process results
+        if "error" in result:
+            error_detail = result["error"]
+            if "Not a financial product" in error_detail:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Analysis failed: {error_detail}. The provided content does not appear to be a financial product."
+                )
+            else:
+                raise HTTPException(
+                    status_code=500,
+                    detail=f"Analysis failed: {error_detail}"
+                )
+        
+        print("✅ Analysis completed successfully!")
+        print(f"📊 Product: {result['product_name']}")
+        print(f"📊 Type: {result['product_type']}")
+        
+        return FinancialProductAnalysisResponse(
+            product_name=result["product_name"],
+            product_type=result["product_type"],
+            key_information=result["key_information"],
+            risks=result["risks"],
+            details=result["details"],
+            source=request.source,
+            source_length=len(input_text),
+            status="success"
+        )
+        
+    except HTTPException:
+        # Re-raise HTTP exceptions as-is
+        raise
+    except anthropic.AuthenticationError:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid Anthropic API key. Please check your credentials."
+        )
+    except anthropic.RateLimitError:
+        raise HTTPException(
+            status_code=429,
+            detail="Rate limit exceeded. Please try again later."
+        )
+    except Exception as e:
+        print(f"❌ Unexpected error during analysis: {str(e)}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=500,
+            detail=f"Unexpected error during financial product analysis: {str(e)}"
+        )
 
 
 if __name__ == "__main__":
