@@ -43,3 +43,9 @@ server: ## Run the FastAPI server
 
 dev-server: ## Run the FastAPI server in development mode
 	uv run uvicorn src.api:app --reload --host 0.0.0.0 --port 8000
+
+debug-server: ## Run the FastAPI server with debug logging
+	uv run uvicorn src.api:app --reload --host 0.0.0.0 --port 8000 --log-level debug
+
+debug-analyzer: ## Run the integrated analyzer with debug output
+	PYTHONPATH=. uv run python -u src/integrated_analyzer.py

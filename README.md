@@ -181,4 +181,64 @@ SUMMARY
 [Analysis summary with status and metrics]
 ```
 
+## 🎨 Web Interface
+
+The AI Finance Analyzer now includes a beautiful web interface built with Streamlit! 
+
+### Features
+- **Beautiful UI**: Modern gradient design with interactive components
+- **Real-time Analysis**: Progress tracking with animated status updates
+- **Comprehensive Results**: Organized display of all analysis components
+- **Data Visualization**: Charts and metrics for analysis summary
+- **Download Results**: Export analysis results as JSON
+- **Responsive Design**: Works on desktop and mobile devices
+
+### Quick Start Web UI
+
+```bash
+# Install dependencies (if not already done)
+uv sync
+
+# Launch the web interface
+python run_app.py
+```
+
+Or run directly with Streamlit:
+```bash
+uv run streamlit run app.py
+```
+
+The app will automatically open in your browser at `http://localhost:8501`
+
+### How to Use the Web Interface
+
+1. **Enter URL**: Paste the URL of a financial product's terms & conditions page
+2. **Click Analyze**: The AI will automatically:
+   - Extract terms and conditions
+   - Identify the product type and company
+   - Analyze risks and key information
+   - Search Reddit for community insights
+   - Generate a comprehensive report
+
+3. **View Results**: The interface displays:
+   - **Product Information**: Name, type, and company
+   - **Terms Analysis**: Key information, risks, and consumer scores
+   - **Community Insights**: Positive and negative feedback from Reddit
+   - **Analysis Summary**: Data sources and metrics
+   - **Download Option**: Full results as JSON
+
+### Supported Financial Products
+- Credit Cards
+- Personal Loans
+- Mortgages
+- Investment Products
+- Banking Services
+
+### Example URLs to Try
+- Wells Fargo Active Cash: `https://www.wellsfargo.com/credit-cards/agreements/active-cash-agreement`
+- Chase Sapphire Preferred: Credit card terms pages
+- Capital One Venture: Terms and conditions URLs
+
+The web interface provides the same powerful analysis as the command-line tools but with a beautiful, user-friendly interface that anyone can use!
+
 

@@ -1,0 +1,28 @@
+{
+  "product_info": {
+    "name": "Wells Fargo Active Cash Credit Card",
+    "type": "credit card",
+    "company": "Wells Fargo Bank, N.A."
+  },
+  "terms_analysis": {
+    "key_information": "Key Points:\n\u2022 APR ranges from 19.24% to 29.24% for purchases (varies with Prime Rate), which is typical for mainstream credit cards\n\u2022 No annual fee and 2% cash back on all purchases make this a competitive cashback card\n\u2022 Pro: No annual fee combined with 2% unlimited cashback beats most no-fee cards that offer 1-1.5%\n\u2022 Con: Balance transfer fee up to 5% is higher than many competitors who offer 3% or promotional 0% fees",
+    "risks": "Potential Risks:\n\u2022 [MEDIUM] Mandatory arbitration clause prevents class-action lawsuits and jury trials, very common in credit cards.\n  Impact: Must resolve disputes through private arbitration instead of court, potentially limiting your legal options",
+    "consumer_score": "Credit Card Consumer Score: 62/100 (Good)\nInterpretation: This is a solid mainstream credit card with fair terms typical of major banks. The no annual fee and 2% cashback make it attractive for everyday spending, though the APR is standard for the industry.",
+    "details": "Details:\n\u2022 Fees: No annual fee, late payment up to $40, balance transfer up to 5%, cash advance 5% or $10 minimum, foreign transaction 3%\n\u2022 Interest rates: Purchase APR 19.24%-29.24%, Cash advance APR 29.99%, minimum interest charge $1 if any interest owed\n\u2022 Repayment: 25-day grace period on purchases, minimum payment is 1% of balance plus interest/fees or $25\n\u2022 Rewards: 2% cash back on all purchases with no caps or categories\n\u2022 Cancellation: Either party can close account anytime, you remain liable for outstanding balance\n\u2022 Dispute resolution: Mandatory binding arbitration for most disputes, small claims court allowed"
+  },
+  "reddit_insights": {
+    "positive": "\u2022 2% cash back on all purchases with no annual fee\n\u2022 $200 welcome bonus and cell phone insurance included\n\u2022 Easy redemption and potential future travel point transfers",
+    "negative": "\u2022 3% foreign transaction fee makes it less ideal for travel\n\u2022 Credit limit increases can be difficult to obtain\n\u2022 Tied to Wells Fargo, which some users view negatively"
+  },
+  "metadata": {
+    "input": "https://www.wellsfargo.com/credit-cards/agreements/active-cash-agreement/",
+    "terms_source": "https://www.wellsfargo.com/credit-cards/agreements/active-cash-agreement/",
+    "reddit_posts_analyzed": 5,
+    "status": "success"
+  },
+  "analysis_metadata": {
+    "analyzed_url": "https://www.wellsfargo.com/credit-cards/agreements/active-cash-agreement/",
+    "analysis_date": "2025-08-24T03:23:01.788999",
+    "analyzer_version": "1.0.0"
+  }
+}
