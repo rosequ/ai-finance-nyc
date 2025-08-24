@@ -1,0 +1,28 @@
+{
+  "product_info": {
+    "name": "Wells Fargo Active Cash Credit Card",
+    "type": "credit card",
+    "company": "Wells Fargo Bank, N.A."
+  },
+  "terms_analysis": {
+    "key_information": "**Key Points:**\n- **Standard variable APR of 19.24-29.24%** for purchases (typical for mainstream cards), with **no annual fee** - a positive feature for everyday spending cards\n- **2% cash back on all purchases** with no rotating categories to track - simple and competitive for a no-fee card\n- **Pro:** No annual fee combined with flat 2% rewards is excellent value - most 2% cards charge fees or require banking relationships\n- **Con:** High cash advance APR at 29.99% and 5% fee make this expensive for getting cash (though standard for the industry)",
+    "risks": "**Potential Risks:**\n- **[MEDIUM]** Late payment fees up to $40 can add up quickly if you miss payments - very common across all credit cards.\n  **Impact:** Missing one payment costs $40 plus potential APR increases on your entire balance",
+    "consumer_score": "- **Credit Card Consumer Score:** 67/100 (Good)\n- **Interpretation:** This is a solid mainstream credit card with fair terms typical of major banks. The no annual fee and 2% flat rewards make it competitive for everyday use, though the APR range means it's best for those who pay in full monthly.",
+    "details": "**Details:**\n- **Interest Rates:** 19.24-29.24% variable APR for purchases/balance transfers; 29.99% for cash advances\n- **Fees:** No annual fee; $40 late payment; 5% balance transfer; 5% or $10 cash advance; 3% foreign transaction\n- **Rewards:** 2% unlimited cash back on all purchases with no caps or categories\n- **Payment Terms:** 25+ day grace period; minimum payment is 1% of balance plus interest or $25\n- **Dispute Resolution:** Mandatory binding arbitration required (cannot sue in court)"
+  },
+  "reddit_insights": {
+    "positive": "- **2% cash back on all purchases** with no category restrictions\n- **$200 welcome bonus** and zero annual fee make it attractive\n- **Additional perks**: cell phone insurance, potential future travel point transfers",
+    "negative": "- **3% foreign transaction fee** makes it less ideal for international travel\n- **Stingy credit limit increases** reported by some users\n- **Limited redemption options** compared to cards from Chase/Citi/Capital One"
+  },
+  "metadata": {
+    "input": "https://www.wellsfargo.com/credit-cards/agreements/active-cash-agreement/",
+    "terms_source": "https://www.wellsfargo.com/credit-cards/agreements/active-cash-agreement/",
+    "reddit_posts_analyzed": 5,
+    "status": "success"
+  },
+  "analysis_metadata": {
+    "analyzed_url": "https://www.wellsfargo.com/credit-cards/agreements/active-cash-agreement/",
+    "analysis_date": "2025-08-24T04:07:05.828279",
+    "analyzer_version": "1.0.0"
+  }
+}

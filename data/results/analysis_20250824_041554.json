@@ -1,0 +1,28 @@
+{
+  "product_info": {
+    "name": "Wells Fargo Active Cash Credit Card",
+    "type": "credit card",
+    "company": "Wells Fargo Bank, N.A."
+  },
+  "terms_analysis": {
+    "key_information": "**Key Points:**\n- **Standard variable APR of 19.24%-29.24%** for purchases/balance transfers (varies based on creditworthiness) - typical for mainstream cards\n- **No annual fee** with 2% cash back on all purchases - competitive rewards structure\n- **Pro:** No annual fee combined with 2% flat-rate cash back beats most no-fee cards (industry average is 1-1.5%)\n- **Con:** High cash advance APR at 29.99% and 5% fee ($10 minimum) - avoid using for cash withdrawals",
+    "risks": "**Potential Risks:**\n- **[MEDIUM]** Late payment fees up to $40 can quickly add up if you miss payments - very common risk.\n  **Impact:** Missing just 2-3 payments per year costs $80-120 in fees plus interest charges\n- **[MEDIUM]** Balance transfer fee of 5% means transferring $5,000 costs $250 upfront - standard but expensive.\n  **Impact:** Reduces savings from consolidating debt; only worthwhile for long-term payoff plans",
+    "consumer_score": "- **Credit Card Consumer Score:** 54/100 (Mediocre)\n- **Interpretation:** This is an average big-bank card - the no annual fee and 2% cash back are genuinely good features, but high APRs (19-29%) and standard fees make it costly if you carry a balance. Best for those who pay in full monthly.",
+    "details": "**Details:**\n- **Interest Rates:** 19.24%-29.24% purchase APR, 29.99% cash advance APR (variable with Prime Rate)\n- **Key Fees:** $0 annual fee, up to $40 late fee, 5% balance transfer fee, 5% cash advance fee\n- **Rewards:** 2% unlimited cash back on all purchases with no caps or categories\n- **Payment Terms:** 25+ day grace period (no interest if paid in full), minimum payment is 1% of balance plus interest\n- **Dispute Resolution:** Mandatory binding arbitration required (can't sue in court except small claims)"
+  },
+  "reddit_insights": {
+    "positive": "- **2% cashback on all purchases** with no category restrictions\n- **$200 welcome bonus** and zero annual fee make it attractive\n- **Cell phone insurance** and potential future travel point transfers",
+    "negative": "- **High interest rates** if balance is carried month-to-month\n- **3% foreign transaction fee** makes it less ideal for international travel\n- **Inconsistent customer service** with occasional unexpected fraud prevention blocks"
+  },
+  "metadata": {
+    "input": "https://www.wellsfargo.com/credit-cards/agreements/active-cash-agreement/",
+    "terms_source": "https://www.wellsfargo.com/credit-cards/agreements/active-cash-agreement/",
+    "reddit_posts_analyzed": 5,
+    "status": "success"
+  },
+  "analysis_metadata": {
+    "analyzed_url": "https://www.wellsfargo.com/credit-cards/agreements/active-cash-agreement/",
+    "analysis_date": "2025-08-24T04:15:54.492728",
+    "analyzer_version": "1.0.0"
+  }
+}

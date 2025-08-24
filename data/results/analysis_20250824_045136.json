@@ -1,0 +1,75 @@
+{
+  "product_info": {
+    "name": "Mastercard or Visa Credit Card",
+    "type": "credit card",
+    "company": "First PREMIER Bank"
+  },
+  "terms_analysis": {
+    "key_information": "**Key Points:**\n- **36% APR** with **$95 program fee**, **$75 annual fee**, and **$45 monthly fee** - extremely high costs that far exceed industry standards\n- Initial credit limit starts at just **$250-$500**, with fees eating up most of your available credit immediately\n- **Con:** Total first-year fees can exceed **$600**, making this one of the most expensive credit cards available\n- **Pro:** No security deposit required unlike secured cards, though the high fees essentially serve the same purpose",
+    "risks": "**Potential Risks:**\n- **HIGH** Fee-harvesting structure where fees consume most of your credit limit immediately, leaving little usable credit.\n  **Impact:** You could pay over **$600** in fees the first year for access to less than **$100** in actual credit\n- **HIGH** Debt trap potential with **36% APR** and minimum payments that barely cover interest.\n  **Impact:** A **$200** balance could take years to pay off and cost over **$500** in total interest\n- **MEDIUM** Mandatory arbitration clause prevents class action lawsuits and jury trials.\n  **Impact:** Limited legal recourse if disputes arise, must use costly individual arbitration",
+    "consumer_score": "- **Credit Card Consumer Score: 5/100 (Predatory)**\n- **Interpretation:** This card falls into the predatory category due to its fee-harvesting structure where fees consume most of the credit limit. It's designed for subprime borrowers but offers terrible value even within that market segment.",
+    "details": "**Details:**\n- **Fees:** **$95 program fee**, **$75 annual fee**, **$45 monthly fee** (**$540/year**), **$39 late payment fee**, **$75 credit limit increase fee**\n- **Interest rates:** **36% APR** for purchases and cash advances, no grace period if carrying a balance\n- **Repayment terms:** Minimum payment is **5%** of balance or **$30** (whichever is greater), payments applied to lowest APR balances first\n- **Cancellation policies:** Can close anytime but all fees remain due, partial refunds only if closed within 11 days and no purchases made\n- **Dispute resolution:** Mandatory binding arbitration, no class actions allowed, must opt out within 45 days of card issuance"
+  },
+  "reddit_insights": {
+    "positive": "- Can help rebuild credit for individuals with limited credit history\n- Provides credit opportunity for those with no other options\n- Some users successfully used card as initial step to better credit",
+    "negative": "- Extremely high fees: monthly, annual, and excessive interest rates\n- Predatory lending practices with multiple hidden charges\n- Considered one of the worst credit cards in the market"
+  },
+  "metadata": {
+    "input": "AGREEMENT_CRKE_95.pdf",
+    "terms_source": "uploaded_pdf",
+    "reddit_posts_analyzed": 5,
+    "status": "success"
+  },
+  "reddit_data": [
+    {
+      "title": "r/CRedit on Reddit: PREMIER Bankcard Credit card",
+      "url": "https://www.reddit.com/r/CRedit/comments/1c9zo2z/premier_bankcard_credit_card/",
+      "top_replies": [
+        "Pay it off. Don't use it again. Never accept their credit limit increases (they charge for those!!) and see if you can get preapproved for either a capital one card or discover card.",
+        "Garbage card overall.\n\nWhen you say you're making payments, do you mean you're carrying a balance and paying interest?  If so, that's not how you want to use credit cards from a financial perspective and should pay the card off ASAP.",
+        "I don't have any experience or opinion on this card or bank.\n\nEven with a bad card, as your first card, it may be a good idea to keep it open and use it for at least 6 months.  Let it start your credit history...  If you make it that long, keeping it a year is even better.  But do not pay any more than required just to keep it open.  If it has an Annual Fee, cancel the card before your next year's fee hits."
+      ]
+    },
+    {
+      "title": "r/CRedit on Reddit: Curious about Premier bank card",
+      "url": "https://www.reddit.com/r/CRedit/comments/zl8iaq/curious_about_premier_bank_card/",
+      "top_replies": [
+        "[removed]",
+        "Pass on that shit company. Not worth it.",
+        "Stay away. Voted the absolute worst card to have. There are way better options."
+      ]
+    },
+    {
+      "title": "r/CreditCards on Reddit: First Premier Credit Card Approved Now what?",
+      "url": "https://www.reddit.com/r/CreditCards/comments/16sf8we/first_premier_credit_card_approved_now_what/",
+      "top_replies": [
+        "First premier is similar to credit one. Both are terrible banks. Should have tried secured cards through reputable banks",
+        "This is exactly how i started building my credit 2 years ago. I started with a Premier 500 limit and worked my way up to Amex. My second card was the credit one. I had no choice but to work with who would work with me. I've never had a problem with either.  Both cards are collecting dust now. But they both played a critical role in helping me rebuild my credit.",
+        "This is the absolute worst card in the history of credit cards. Everything involves being charged a fee with them. EVERYTHING. I would go the secured  card route before I ever gave these predators a dime.  This coming from a person that previously gave these sorry motherfuckers many dimes."
+      ]
+    },
+    {
+      "title": "r/CreditCards on Reddit: First Premier Bank is the scum of the earth.",
+      "url": "https://www.reddit.com/r/CreditCards/comments/1akh13a/first_premier_bank_is_the_scum_of_the_earth/",
+      "top_replies": [
+        "How did they withdraw the money from your checking? Did you give them your account and routing number?",
+        "You authorized First Premier to withdraw funds when you gave them your checking account number and submitted your application. Did you not read the Schumer Box or the Terms and Conditions before you submitted your application? I don't think that you did! \ud83e\udd14",
+        "One of their cards has [36% APR with a $95 \"one time fee\" AND $125 AF?](https://connect.mypremiercreditcard.com/images/offers/AGREEMENT_CRKO_95.pdf)\n\nJesus. I didn't know going over 29.99 was even legal."
+      ]
+    },
+    {
+      "title": "r/CreditCards on Reddit: Premier Bank Credit Card: Worth it?",
+      "url": "https://www.reddit.com/r/CreditCards/comments/1m9fjyy/premier_bank_credit_card_worth_it/",
+      "top_replies": [
+        "Monthly fee, annual fee, secondary card holder fee. No, run.",
+        "If this is the same company I'm thinking of staying far away from them. They're a predatory lender, if you need help building credit look into a secured card from discover.",
+        "No"
+      ]
+    }
+  ],
+  "analysis_metadata": {
+    "analyzed_url": "AGREEMENT_CRKE_95.pdf",
+    "analysis_date": "2025-08-24T04:51:36.186150",
+    "analyzer_version": "1.0.0"
+  }
+}

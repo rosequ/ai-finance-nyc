@@ -23,32 +23,104 @@ class FinancialProductAnalyzer:
             raise ValueError("ANTHROPIC_API_KEY not found in environment variables")
         
         self.client = anthropic.Anthropic(api_key=api_key)
+
+    def _extract_xml_tag(self, text: str, tag_name: str) -> str:
+        """Extract content from XML-like tags"""
+        start_tag = f"<{tag_name}>"
+        end_tag = f"</{tag_name}>"
+        
+        start_idx = text.find(start_tag)
+        if start_idx == -1:
+            return ""
+        
+        start_idx += len(start_tag)
+        end_idx = text.find(end_tag, start_idx)
+        
+        if end_idx == -1:
+            return ""
+        
+        return text[start_idx:end_idx].strip()
     
-    def extract_product_info(self, input_text: str) -> Dict[str, Any]:
+    def _load_prompt_template(self, product_type: str) -> str:
         """
-        Step 1: Extract product name and type from input text
+        Load the appropriate prompt template based on product type
         
         Args:
-            input_text: Raw text containing product information
+            product_type: Type of financial product
             
         Returns:
-            Dictionary with product_name and product_type
+            Prompt template string
+        """
+        # Map product types to prompt files
+        prompt_mapping = {
+            "credit card": "credit_card.txt",
+            "loan": "loan.txt"
+        }
+        
+        # Get the prompt file name
+        prompt_file = prompt_mapping.get(product_type.lower())
+        if not prompt_file:
+            raise ValueError(f"No prompt template found for product type: {product_type}")
+        
+        prompt_path = os.path.join(os.path.dirname(__file__), "prompts", prompt_file)
+        
+        try:
+            with open(prompt_path, 'r', encoding='utf-8') as f:
+                content = f.read().strip()
+                if not content or content.startswith("#"):
+                    raise ValueError(f"Prompt template for {product_type} is empty or not implemented")
+                return content
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Prompt template file not found: {prompt_path}")
+
+    def _load_rating_prompt(self) -> str:
+        """
+        Load the rating prompt template
+        
+        Returns:
+            Rating prompt template string
+        """
+        prompt_path = os.path.join(os.path.dirname(__file__), "prompts", "rating.txt")
+        
+        try:
+            with open(prompt_path, 'r', encoding='utf-8') as f:
+                content = f.read().strip()
+                if not content or content.startswith("#"):
+                    raise ValueError("Rating prompt template is empty or not implemented")
+                return content
+        except FileNotFoundError:
+            raise FileNotFoundError(f"Rating prompt template file not found: {prompt_path}")
+
+    def extract_product_info(self, terms_content: str) -> Dict[str, Any]:
+        """
+        Step 1: Extract product name, type, and company from terms content
+        
+        Args:
+            terms_content: Raw text containing product terms and conditions
+            
+        Returns:
+            Dictionary with product_name, product_type, and company_name
         """
         prompt = f"""
-        You are an expert AI financial analyst. Read the input and decide the product name and type.
+        You are an expert AI financial analyst. Read the input and extract the product information.
 
         <input_data>
-        {input_text}
+        {terms_content}
         </input_data>
 
         Task:
         1) Extract the product's marketed or legal name.
-        2) Classify the product type as exactly one of: credit card, loan, neither.
+        2) Extract the company/bank name that offers this product.
+        3) Classify the product type as exactly one of: credit card, loan, neither.
 
         Output only:
         <product_name>
         {{PRODUCT_NAME}}
         </product_name>
+
+        <company_name>
+        {{COMPANY_NAME}}
+        </company_name>
 
         <product_type>
         {{PRODUCT_TYPE}}  <!-- credit card | loan | neither -->
@@ -73,17 +145,19 @@ class FinancialProductAnalyzer:
             
             # Parse the XML-like response
             product_name = self._extract_xml_tag(response_content, "product_name")
+            company_name = self._extract_xml_tag(response_content, "company_name")
             product_type = self._extract_xml_tag(response_content, "product_type")
             
             if not product_name or not product_type:
                 return {
                     "error": "Failed to extract product information",
                     "raw_response": response_content,
-                    "input_text": input_text
+                    "terms_content": terms_content
                 }
             
             return {
                 "product_name": product_name.strip(),
+                "company_name": company_name.strip() if company_name else "",
                 "product_type": product_type.strip().lower(),
                 "status": "success"
             }
@@ -91,40 +165,8 @@ class FinancialProductAnalyzer:
         except Exception as e:
             return {
                 "error": f"Error extracting product info: {str(e)}",
-                "input_text": input_text
+                "terms_content": terms_content
             }
-    
-    def _load_prompt_template(self, product_type: str) -> str:
-        """
-        Load the appropriate prompt template based on product type
-        
-        Args:
-            product_type: Type of financial product
-            
-        Returns:
-            Prompt template string
-        """
-        # Map product types to prompt files
-        prompt_mapping = {
-            "credit card": "credit_card.txt",
-            "loan": "loan.txt"
-        }
-        
-        # Get the prompt file name
-        prompt_file = prompt_mapping.get(product_type.lower())
-        if not prompt_file:
-            raise ValueError(f"No prompt template found for product type: {product_type}")
-        
-        prompt_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "prompts", prompt_file)
-        
-        try:
-            with open(prompt_path, 'r', encoding='utf-8') as f:
-                content = f.read().strip()
-                if not content or content.startswith("#"):
-                    raise ValueError(f"Prompt template for {product_type} is empty or not implemented")
-                return content
-        except FileNotFoundError:
-            raise FileNotFoundError(f"Prompt template file not found: {prompt_path}")
     
     def analyze_terms_and_conditions(self, product_type: str, terms_and_conditions: str) -> Dict[str, Any]:
         """
@@ -149,10 +191,10 @@ class FinancialProductAnalyzer:
         try:
             # Call Claude Sonnet 4
             message = self.client.messages.create(
-                # model="claude-opus-4-1-20250805",
-                model="claude-3-5-haiku-20241022",
-                max_tokens=2000,
-                temperature=0.3,
+                model="claude-opus-4-1-20250805",
+                # model="claude-3-5-haiku-20241022",
+                max_tokens=5000,
+                temperature=0.1,
                 messages=[
                     {
                         "role": "user",
@@ -167,6 +209,7 @@ class FinancialProductAnalyzer:
             parsed_product_type = self._extract_xml_tag(response_content, "product_type")
             key_information = self._extract_xml_tag(response_content, "key_information")
             risks = self._extract_xml_tag(response_content, "risks")
+            consumer_score = self._extract_xml_tag(response_content, "consumer_score")
             details = self._extract_xml_tag(response_content, "details")
             
             if not all([parsed_product_type, key_information, risks, details]):
@@ -181,6 +224,7 @@ class FinancialProductAnalyzer:
                 "product_type": parsed_product_type.strip(),
                 "key_information": key_information.strip(),
                 "risks": risks.strip(),
+                "consumer_score": consumer_score.strip() if consumer_score else "",
                 "details": details.strip(),
                 "status": "success"
             }
@@ -191,49 +235,106 @@ class FinancialProductAnalyzer:
                 "product_type": product_type,
                 "terms_and_conditions": terms_and_conditions[:500] + "..." if len(terms_and_conditions) > 500 else terms_and_conditions
             }
-    
-    def _extract_xml_tag(self, text: str, tag_name: str) -> str:
-        """Extract content from XML-like tags"""
-        start_tag = f"<{tag_name}>"
-        end_tag = f"</{tag_name}>"
+
+    def reddit_analysis(self, reddit_discussions: str, product_name: str = "", product_type: str = "", company_name: str = "") -> Dict[str, Any]:
+        """
+        Step 3: Analyze Reddit discussions and return insights
         
-        start_idx = text.find(start_tag)
-        if start_idx == -1:
-            return ""
+        Args:
+            reddit_discussions: Reddit discussions as string
+            product_name: Name of the product
+            product_type: Type of the product
+            company_name: Name of the company
+            
+        Returns:
+            Dictionary with positive and negative insights
+        """
+        prompt = f"""
+        You are an expert financial analyst. Analyze the Reddit discussions about {product_name} ({product_type}) by {company_name} and provide concise insights.
+
+        <reddit_discussions>
+        {reddit_discussions}
+        </reddit_discussions>
+
+        Task: Extract 2-3 SHORT bullet points each (max 15 words per bullet):
+        - 2-3 positive insights/experiences
+        - 2-3 negative insights/concerns
+
+        Keep each bullet point VERY brief and specific. Focus on the most important themes only.
+
+        Output only:
+        <positive_insights>
+        - [Brief positive insight 1]
+        - [Brief positive insight 2]
+        - [Brief positive insight 3]
+        </positive_insights>
+
+        <negative_insights>
+        - [Brief negative insight 1]
+        - [Brief negative insight 2]
+        - [Brief negative insight 3]
+        </negative_insights>
+
+        Remember:
+        - Return the text nicely formatted in Markdown (bold, bullet points, etc.).
+        """
         
-        start_idx += len(start_tag)
-        end_idx = text.find(end_tag, start_idx)
-        
-        if end_idx == -1:
-            return ""
-        
-        return text[start_idx:end_idx].strip()
-    
-    def analyze_financial_product(self, input_text: str) -> Dict[str, Any]:
+        try:
+            message = self.client.messages.create(
+                model="claude-3-5-haiku-20241022",
+                max_tokens=800,
+                temperature=0.3,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            
+            response_content = message.content[0].text.strip()
+            
+            positive_insights = self._extract_xml_tag(response_content, "positive_insights")
+            negative_insights = self._extract_xml_tag(response_content, "negative_insights")
+            
+            if not positive_insights and not negative_insights:
+                return {
+                    "error": "Failed to parse Reddit analysis response",
+                    "raw_response": response_content
+                }
+            
+            return {
+                "positive_insights": positive_insights.strip(),
+                "negative_insights": negative_insights.strip(),
+                "status": "success"
+            }
+            
+        except Exception as e:
+            return {
+                "error": f"Error analyzing Reddit discussions: {str(e)}"
+            }
+
+    def gen_analysis(self, terms_content: str) -> Dict[str, Any]:
         """
         Complete two-step analysis of financial product
         
         Args:
-            input_text: Raw text containing product information and terms
+            terms_content: Raw text containing product terms and conditions
             
         Returns:
             Dictionary with complete analysis
         """
         # Step 1: Extract product information
         print("🔍 Step 1: Extracting product information...")
-        product_info = self.extract_product_info(input_text)
+        product_info = self.extract_product_info(terms_content)
         
         if "error" in product_info:
             return {
                 "error": f"Step 1 failed: {product_info['error']}",
                 "step": "product_extraction",
-                "input_text": input_text
+                "terms_content": terms_content
             }
         
         product_name = product_info["product_name"]
         product_type = product_info["product_type"]
+        company_name = product_info.get("company_name", "")
         
-        print(f"✅ Extracted: {product_name} ({product_type})")
+        print(f"✅ Extracted: {product_name} ({product_type}) by {company_name}")
         
         # Check if it's a financial product
         if product_type == "neither":
@@ -241,12 +342,12 @@ class FinancialProductAnalyzer:
                 "error": "Not a financial product",
                 "product_name": product_name,
                 "product_type": product_type,
-                "input_text": input_text
+                "terms_content": terms_content
             }
         
         # Step 2: Analyze terms and conditions
         print("📋 Step 2: Analyzing terms and conditions...")
-        analysis = self.analyze_terms_and_conditions(product_type, input_text)
+        analysis = self.analyze_terms_and_conditions(product_type, terms_content)
         
         if "error" in analysis:
             return {
@@ -254,32 +355,20 @@ class FinancialProductAnalyzer:
                 "step": "terms_analysis",
                 "product_name": product_name,
                 "product_type": product_type,
-                "input_text": input_text
+                "terms_content": terms_content
             }
         
         # Combine results
         return {
             "product_name": product_name,
             "product_type": product_type,
+            "company_name": company_name,
             "key_information": analysis["key_information"],
             "risks": analysis["risks"],
+            "consumer_score": analysis.get("consumer_score", ""),
             "details": analysis["details"],
             "status": "success"
         }
-    
-
-def analyze_financial_product_simple(input_text: str) -> Dict[str, Any]:
-    """
-    Simple function to analyze a financial product
-    
-    Args:
-        input_text: Raw text containing product information and terms
-        
-    Returns:
-        Dictionary containing the analysis results
-    """
-    analyzer = FinancialProductAnalyzer()
-    return analyzer.analyze_financial_product(input_text)
 
 
 def main():
@@ -292,21 +381,21 @@ def main():
     path = "https://www.wellsfargo.com/credit-cards/agreements/active-cash-agreement"
     
     try:
-        # Read content from PDF using ContentReader
-        from content_reader import ContentReader
+        # Read content from URL using ContentReader
+        from data_collector import ContentReader
         content_reader = ContentReader()
         
-        print(f"📄 Reading PDF file: {path}")
-        input_text = content_reader.read_content(path)
+        print(f"📄 Reading URL: {path}")
+        input_text = content_reader.read_from_url(path)
         
-        print(f"✅ PDF read successfully!")
+        print(f"✅ URL read successfully!")
         print(f"📊 Input text length: {len(input_text)} characters")
         print(f"📄 First 200 characters: {input_text[:200]}...")
         print("\n" + "=" * 60)
         
         # Initialize analyzer and analyze the text
         analyzer = FinancialProductAnalyzer()
-        result = analyzer.analyze_financial_product(input_text)
+        result = analyzer.gen_analysis(input_text)
         
         # Print results
         if "error" in result:
