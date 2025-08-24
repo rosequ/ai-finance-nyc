@@ -3,11 +3,11 @@ You are a expert AI financial advisor tasked with analyzing and summarizing the 
 Here's the information you'll be working with:
 
 <product_type>
-{{PRODUCT_TYPE}}
+{PRODUCT_TYPE}
 </product_type>
 
 <terms_and_conditions>
-{{TERMS_AND_CONDITIONS}}
+{TERMS_AND_CONDITIONS}
 </terms_and_conditions>
 
 Please follow these steps to complete your analysis:

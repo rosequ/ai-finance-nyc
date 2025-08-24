@@ -57,10 +57,10 @@ class FinancialProductAnalyzer:
             "loan": "loan.txt"
         }
         
-        # Get the prompt file name
-        prompt_file = prompt_mapping.get(product_type.lower())
+        # Get the prompt file name, fallback to loan template
+        prompt_file = prompt_mapping.get(product_type.lower(), "loan.txt")
         if not prompt_file:
-            raise ValueError(f"No prompt template found for product type: {product_type}")
+            prompt_file = "loan.txt"  # Default to loan template
         
         prompt_path = os.path.join(os.path.dirname(__file__), "prompts", prompt_file)
         
@@ -111,7 +111,7 @@ class FinancialProductAnalyzer:
         Task:
         1) Extract the product's marketed or legal name.
         2) Extract the company/bank name that offers this product.
-        3) Classify the product type as exactly one of: credit card, loan, neither.
+        3) Classify the product type as exactly one of: credit card, loan. If unclear, default to loan.
 
         Output only:
         <product_name>
@@ -123,7 +123,7 @@ class FinancialProductAnalyzer:
         </company_name>
 
         <product_type>
-        {{PRODUCT_TYPE}}  <!-- credit card | loan | neither -->
+        {{PRODUCT_TYPE}}  <!-- credit card | loan -->
         </product_type>
         """
         
@@ -147,6 +147,10 @@ class FinancialProductAnalyzer:
             product_name = self._extract_xml_tag(response_content, "product_name")
             company_name = self._extract_xml_tag(response_content, "company_name")
             product_type = self._extract_xml_tag(response_content, "product_type")
+            
+            # Ensure product_type is valid, default to loan
+            if not product_type or product_type.lower() not in ["credit card", "loan"]:
+                product_type = "loan"
             
             if not product_name or not product_type:
                 return {
@@ -184,8 +188,11 @@ class FinancialProductAnalyzer:
         
         # Format the prompt with the specific data
         prompt = prompt_template.format(
+            PRODUCT_TYPE=product_type,
+            TERMS_AND_CONDITIONS=terms_and_conditions,
             product_type=product_type,
-            terms_and_conditions=terms_and_conditions
+            terms_and_conditions=terms_and_conditions,
+            terms_content=terms_and_conditions
         )
         
         try:

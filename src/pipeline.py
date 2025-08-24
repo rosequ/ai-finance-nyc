@@ -25,79 +25,14 @@ def is_url(input_str: str) -> bool:
         return False
 
 
-def analyzer_pipeline(input_source: Union[str, object]) -> Dict[str, Any]:
-    """
-    Complete analysis pipeline for financial products
-    
-    Args:
-        input_source: URL string or uploaded file object
-        
-    Returns:
-        Dictionary with complete analysis results
-    """
-    # Determine if input is a file or URL
-    is_file = hasattr(input_source, 'read')
-    input_description = input_source.name if is_file else input_source
-    print(f"🚀 Starting analysis for: {input_description}")
-    
-    # Initialize components
+def analyzer_pipeline(terms_content: Union[str]) -> Dict[str, Any]:
     analyzer = FinancialProductAnalyzer()
-    
-    # Step 1: Get terms and conditions
-    print("📄 Step 1: Getting terms and conditions...")
-    
-    if is_file:
-        # Handle PDF file upload
-        try:
-            # Read PDF content
-            pdf_reader = PyPDF2.PdfReader(input_source)
-            terms_content = ""
-            for page in pdf_reader.pages:
-                terms_content += page.extract_text() + "\n"
-            
-            if not terms_content.strip():
-                return {
-                    "error": "Failed to extract text from PDF",
-                    "input": input_description
-                }
-            
-            terms_data = {
-                "content": terms_content,
-                "status": "success",
-                "source_url": "uploaded_pdf"
-            }
-            
-        except Exception as e:
-            return {
-                "error": f"Failed to read PDF: {str(e)}",
-                "input": input_description
-            }
-    else:
-        # Handle URL input
-        if is_url(input_source):
-            terms_data = web_scrape(input_source)
-        else:
-            raise ValueError("Input must be a URL or PDF file")
-        
-        if terms_data.get("status") != "success" or not terms_data.get("content"):
-            return {
-                "error": "Failed to get terms and conditions",
-                "input": input_source,
-                "terms_data": terms_data
-            }
-        
-        terms_content = terms_data["content"]
-    
-    print(f"✅ Got terms content ({len(terms_content)} chars)")
-    
-    # Step 2: Extract product information
-    print("🔍 Step 2: Extracting product information...")
     product_info = analyzer.extract_product_info(terms_content)
     
     if "error" in product_info:
         return {
             "error": f"Failed to extract product info: {product_info['error']}",
-            "input": input_description
+            "input": terms_content[:200] + "..." if len(terms_content) > 200 else terms_content
         }
     
     product_name = product_info["product_name"]
@@ -155,8 +90,8 @@ def analyzer_pipeline(input_source: Union[str, object]) -> Dict[str, Any]:
             "negative": reddit_analysis["negative_insights"]
         },
         "metadata": {
-            "input": input_description,
-            "terms_source": terms_data.get("source_url", "search"),
+            "input": terms_content[:200] + "..." if len(terms_content) > 200 else terms_content,
+            "terms_source": "chrome_extension",
             "reddit_posts_analyzed": len(reddit_data),
             "status": "success"
         },

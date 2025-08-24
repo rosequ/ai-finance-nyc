@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Terms & Conditions Analyzer</title>
+    <style>
+        body {
+            width: 450px;
+            min-height: 400px;
+            padding: 0;
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #007cff, #0056cc);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 18px;
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .header .subtitle {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 4px;
+        }
+        
+        .content {
+            padding: 20px;
+        }
+        
+        .page-info {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .page-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+        
+        .page-url {
+            font-size: 12px;
+            color: #666;
+            word-break: break-all;
+        }
+        
+        .analyze-btn {
+            width: 100%;
+            padding: 12px;
+            background: #007cff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 20px;
+            transition: background 0.2s;
+        }
+        
+        .analyze-btn:hover {
+            background: #0056cc;
+        }
+        
+        .analyze-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 30px 20px;
+            display: none;
+        }
+        
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #007cff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .loading-text {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .error {
+            background: #fff5f5;
+            color: #c53030;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #fed7d7;
+            margin-bottom: 20px;
+            display: none;
+        }
+        
+        .error-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .results {
+            display: none;
+        }
+        
+        .result-section {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .result-section h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .product-info {
+            display: grid;
+            gap: 8px;
+        }
+        
+        .product-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .product-item:last-child {
+            border-bottom: none;
+        }
+        
+        .product-label {
+            font-weight: 600;
+            color: #666;
+        }
+        
+        .product-value {
+            color: #333;
+            text-align: right;
+            max-width: 60%;
+            word-break: break-word;
+        }
+        
+        .risk-level {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .risk-low { background: #d4edda; color: #155724; }
+        .risk-medium { background: #fff3cd; color: #856404; }
+        .risk-high { background: #f8d7da; color: #721c24; }
+        
+        .analysis-content {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #444;
+        }
+        
+        .analysis-content h4 {
+            margin: 15px 0 8px 0;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        .analysis-content ul {
+            margin: 8px 0;
+            padding-left: 20px;
+        }
+        
+        .analysis-content li {
+            margin-bottom: 5px;
+        }
+        
+        .reddit-insights {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .insight-box {
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .insight-positive {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        
+        .insight-negative {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .insight-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .api-status {
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+        }
+        
+        .status-success { background: #28a745; }
+        .status-error { background: #dc3545; }
+        .status-warning { background: #ffc107; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🤖 AI Terms & Conditions Analyzer</h1>
+        <div class="subtitle">Powered by Financial Product AI</div>
+    </div>
+    
+    <div class="content">
+        <div class="page-info" id="page-info">
+            <div class="page-title" id="page-title">Loading...</div>
+            <div class="page-url" id="page-url">-</div>
+        </div>
+        
+        <button class="analyze-btn" id="analyze-btn">
+            🔍 Analyze Terms & Conditions
+        </button>
+        
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <div class="loading-text" id="loading-text">Analyzing with AI...</div>
+        </div>
+        
+        <div class="error" id="error">
+            <div class="error-title">Analysis Failed</div>
+            <div id="error-text">Something went wrong</div>
+        </div>
+        
+        <div class="results" id="results">
+            <div class="result-section">
+                <h3>📋 Product Information</h3>
+                <div class="product-info" id="product-info">
+                    <!-- Product details will be populated here -->
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <h3>⚖️ Terms Analysis</h3>
+                <div class="analysis-content" id="terms-analysis">
+                    <!-- Terms analysis will be populated here -->
+                </div>
+            </div>
+            
+            <div class="result-section">
+                <h3>💬 Reddit Insights</h3>
+                <div class="reddit-insights" id="reddit-insights">
+                    <!-- Reddit insights will be populated here -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="api-status" id="api-status">
+            <span class="status-dot status-warning"></span>
+            Checking API connection...
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
