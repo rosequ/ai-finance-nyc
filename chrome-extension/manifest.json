@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Personal Financial Advisor",
+  "name": "Personal Financial Guardian",
   "version": "1.0",
-  "description": "AI-powered personal financial advisor for analyzing terms and conditions",
+  "description": "AI-powered Personal Financial Guardian for analyzing terms and conditions",
   "permissions": [
     "activeTab"
   ],
@@ -11,7 +11,7 @@
   ],
   "action": {
     "default_popup": "popup.html",
-    "default_title": "Personal Financial Advisor"
+    "default_title": "Personal Financial Guardian"
   },
   "content_scripts": [
     {

@@ -1,7 +1,7 @@
 // Enhanced popup script for AI Terms & Conditions Analyzer
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Personal Financial Advisor popup loaded');
+    console.log('Personal Financial Guardian popup loaded');
     
     // Configuration
     const API_BASE_URL = 'http://localhost:8000';
@@ -200,6 +200,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 termsHtml += `<h4>⚠️ Risks & Concerns</h4><div>${formatMarkdown(analysis.risks)}</div>`;
             }
             
+            // Financial Ramifications
+            if (analysis.financial_ramifications) {
+                termsHtml += `<h4>💰 Financial Gotchas</h4><div>${formatMarkdown(analysis.financial_ramifications)}</div>`;
+            }
+            
             // Details
             if (analysis.details) {
                 termsHtml += `<h4>📖 Additional Details</h4><div>${formatMarkdown(analysis.details)}</div>`;
@@ -212,15 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (data.reddit_insights) {
             const insights = data.reddit_insights;
             let redditHtml = '';
-            
-            if (insights.positive) {
-                redditHtml += `
-                    <div class="insight-box insight-positive">
-                        <div class="insight-title">👍 Positive Feedback</div>
-                        <div>${formatMarkdown(insights.positive)}</div>
-                    </div>
-                `;
-            }
             
             if (insights.negative) {
                 redditHtml += `

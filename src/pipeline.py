@@ -82,6 +82,7 @@ def analyzer_pipeline(terms_content: Union[str]) -> Dict[str, Any]:
         "terms_analysis": {
             "key_information": terms_analysis["key_information"],
             "risks": terms_analysis["risks"],
+            "financial_ramifications": terms_analysis.get("financial_ramifications", ""),
             "consumer_score": terms_analysis.get("consumer_score", ""),
             "details": terms_analysis["details"]
         },

@@ -1,4 +1,4 @@
-# Personal Financial Advisor - Chrome Extension
+# Personal Financial Guardian - Chrome Extension
 
 ## Installation
 

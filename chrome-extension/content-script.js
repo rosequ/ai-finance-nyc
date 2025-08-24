@@ -1,6 +1,6 @@
 // Content script for AI Terms & Conditions Analyzer
 
-console.log('Personal Financial Advisor content script loaded');
+console.log('Personal Financial Guardian content script loaded');
 
 // Listen for messages from popup
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {

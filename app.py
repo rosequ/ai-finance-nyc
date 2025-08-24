@@ -338,6 +338,12 @@ def display_terms_analysis(terms_analysis: Dict[str, Any]):
         content = content.strip()
         st.markdown(content)
     
+    # Financial Ramifications (if available)
+    if terms_analysis.get('financial_ramifications'):
+        with st.expander("💰 Financial Ramifications & Gotchas", expanded=True):
+            content = terms_analysis['financial_ramifications']
+            st.markdown(content)
+    
     # Detailed Analysis
     with st.expander("Detailed Analysis"):
         # Remove duplicate "Details:" header
@@ -355,23 +361,13 @@ def display_reddit_insights(reddit_insights: Dict[str, Any]):
     """Display Reddit insights in a two-column layout with clean Markdown rendering"""
     st.markdown("### Community Insights from Community Discussions")
     
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown("#### 👍 Positive Feedback")
-        if reddit_insights.get('positive'):
-            content = reddit_insights['positive']
-            st.markdown(content)
-        else:
-            st.info("No positive insights found")
-    
-    with col2:
-        st.markdown("#### 👎 Concerns & Issues")
-        if reddit_insights.get('negative'):
-            content = reddit_insights['negative']
-            st.markdown(content)
-        else:
-            st.info("No negative insights found")
+    # Only show negative feedback/concerns
+    st.markdown("#### ⚠️ Community Concerns & Issues")
+    if reddit_insights.get('negative'):
+        content = reddit_insights['negative']
+        st.markdown(content)
+    else:
+        st.info("No concerns found in community discussions")
 
 def display_reddit_sources(reddit_data: list):
     """Display Reddit source URLs"""

@@ -41,6 +41,18 @@ class FinancialProductAnalyzer:
         
         return text[start_idx:end_idx].strip()
     
+    def _fix_markdown_formatting(self, text: str) -> str:
+        """Remove all asterisks to eliminate markdown formatting issues"""
+        if not text:
+            return text
+        
+        # Remove all asterisks to eliminate markdown formatting completely
+        # This ensures clean, readable text without formatting issues
+        text = text.replace('**', '')
+        text = text.replace('*', '')
+        
+        return text
+    
     def _load_prompt_template(self, product_type: str) -> str:
         """
         Load the appropriate prompt template based on product type
@@ -216,6 +228,7 @@ class FinancialProductAnalyzer:
             parsed_product_type = self._extract_xml_tag(response_content, "product_type")
             key_information = self._extract_xml_tag(response_content, "key_information")
             risks = self._extract_xml_tag(response_content, "risks")
+            financial_ramifications = self._extract_xml_tag(response_content, "financial_ramifications")
             consumer_score = self._extract_xml_tag(response_content, "consumer_score")
             details = self._extract_xml_tag(response_content, "details")
             
@@ -229,10 +242,11 @@ class FinancialProductAnalyzer:
             
             return {
                 "product_type": parsed_product_type.strip(),
-                "key_information": key_information.strip(),
-                "risks": risks.strip(),
-                "consumer_score": consumer_score.strip() if consumer_score else "",
-                "details": details.strip(),
+                "key_information": self._fix_markdown_formatting(key_information.strip()),
+                "risks": self._fix_markdown_formatting(risks.strip()),
+                "financial_ramifications": self._fix_markdown_formatting(financial_ramifications.strip()) if financial_ramifications else "",
+                "consumer_score": self._fix_markdown_formatting(consumer_score.strip()) if consumer_score else "",
+                "details": self._fix_markdown_formatting(details.strip()),
                 "status": "success"
             }
             
