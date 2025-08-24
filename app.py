@@ -306,6 +306,12 @@ def display_terms_analysis(terms_analysis: Dict[str, Any]):
     """Display terms analysis in organized sections with clean Markdown rendering"""
     st.markdown("### Terms & Conditions Analysis")
     
+    # Consumer Score (if available) - NOW FIRST
+    if terms_analysis.get('consumer_score'):
+        with st.expander("⭐ Consumer Score", expanded=True):
+            content = terms_analysis['consumer_score']
+            st.markdown(content)
+    
     # Key Information
     with st.expander("📌 Key Information", expanded=True):
         # Remove duplicate "Key Points:" header and render clean Markdown
@@ -318,12 +324,6 @@ def display_terms_analysis(terms_analysis: Dict[str, Any]):
         
         # Clean Markdown rendering without styled boxes
         st.markdown(content)
-    
-    # Consumer Score (if available)
-    if terms_analysis.get('consumer_score'):
-        with st.expander("⭐ Consumer Score"):
-            content = terms_analysis['consumer_score']
-            st.markdown(content)
     
     # Risks and Warnings
     with st.expander("⚠️ Risks & Important Notes", expanded=True):
@@ -338,7 +338,7 @@ def display_terms_analysis(terms_analysis: Dict[str, Any]):
         content = content.strip()
         st.markdown(content)
     
-    # Detailed Analysis
+    # Detailed Analysis - ONLY ONE NOT EXPANDED
     with st.expander("Detailed Analysis"):
         # Remove duplicate "Details:" header
         content = terms_analysis['details']
