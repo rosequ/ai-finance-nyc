@@ -3,117 +3,120 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms & Conditions Analyzer</title>
-    <link rel="stylesheet" href="popup.css">
+    <title>Simple Terms & Conditions Analyzer</title>
+    <style>
+        body {
+            width: 400px;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            background: #f5f5f5;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 18px;
+            margin: 0;
+            color: #333;
+        }
+        
+        .analyze-btn {
+            width: 100%;
+            padding: 12px;
+            background: #007cff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        
+        .analyze-btn:hover {
+            background: #0056cc;
+        }
+        
+        .analyze-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .content-area {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            max-height: 400px;
+            overflow-y: auto;
+            padding: 15px;
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.4;
+            display: none;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .error {
+            color: #dc3545;
+            padding: 10px;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .page-info {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .page-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .page-url {
+            word-break: break-all;
+        }
+    </style>
 </head>
 <body>
-    <div class="popup-container">
-        <!-- Header -->
-        <div class="header">
-            <div class="logo">
-                <span class="logo-icon">📋</span>
-                <h1>T&C Analyzer</h1>
-            </div>
-            <div class="status-indicator" id="status-indicator">
-                <span class="status-dot"></span>
-                <span class="status-text">Ready</span>
-            </div>
-        </div>
-
-        <!-- Main Content -->
-        <div class="content">
-            <!-- Current Page Analysis -->
-            <div class="section">
-                <h2>Current Page</h2>
-                <div class="page-info" id="page-info">
-                    <div class="page-title" id="page-title">Loading...</div>
-                    <div class="page-url" id="page-url">-</div>
-                </div>
-                
-                <div class="analysis-result" id="analysis-result" style="display: none;">
-                    <div class="result-header">
-                        <div class="result-status" id="result-status">
-                            <span class="result-icon" id="result-icon">⚠</span>
-                            <span class="result-text" id="result-text">Not a Terms Page</span>
-                        </div>
-                        <div class="result-confidence" id="result-confidence">0%</div>
-                    </div>
-                    <div class="result-summary" id="result-summary"></div>
-                    <div class="result-details" id="result-details"></div>
-                </div>
-
-                <div class="actions">
-                    <button class="btn btn-secondary" id="test-connection" style="margin-bottom: 8px;">
-                        <span class="btn-icon">🧪</span>
-                        Test Connection
-                    </button>
-                    <button class="btn btn-primary" id="analyze-current">
-                        <span class="btn-icon">🔍</span>
-                        Review T&C
-                    </button>
-                    <button class="btn btn-secondary" id="highlight-terms" style="display: none;">
-                        <span class="btn-icon">🎯</span>
-                        Highlight Terms
-                    </button>
-                </div>
-            </div>
-
-            <!-- Loading Indicator -->
-            <div class="loading" id="loading" style="display: none;">
-                <div class="loading-spinner"></div>
-                <div class="loading-text">Analyzing...</div>
-            </div>
-
-            <!-- Error Display -->
-            <div class="error" id="error" style="display: none;">
-                <div class="error-icon">⚠️</div>
-                <div class="error-text" id="error-text">Something went wrong</div>
-                <button class="btn btn-small" id="retry-btn">Retry</button>
-            </div>
-        </div>
-
-        <!-- Footer -->
-        <div class="footer">
-            <div class="footer-links">
-                <button class="link-btn" id="settings-btn">⚙️ Settings</button>
-                <button class="link-btn" id="help-btn">❓ Help</button>
-            </div>
-            <div class="footer-info">
-                <span class="version">v1.0</span>
-                <span class="api-status" id="api-status">
-                    <span class="api-dot"></span>
-                    API Ready
-                </span>
-            </div>
-        </div>
+    <div class="header">
+        <h1>📋 Terms & Conditions Analyzer</h1>
     </div>
-
-    <!-- Settings Modal -->
-    <div class="modal" id="settings-modal" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Settings</h3>
-                <button class="modal-close" id="settings-close">×</button>
-            </div>
-            <div class="modal-body">
-                <div class="setting-group">
-                    <label for="api-url">API Base URL:</label>
-                    <input type="url" id="api-url" value="http://localhost:8000" class="setting-input">
-                </div>
-                <div class="setting-group">
-                    <label for="auto-analyze">Auto-analyze pages:</label>
-                    <input type="checkbox" id="auto-analyze" checked>
-                </div>
-                <div class="setting-group">
-                    <label for="show-overlay">Show analysis overlay:</label>
-                    <input type="checkbox" id="show-overlay" checked>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn btn-primary" id="save-settings">Save Settings</button>
-            </div>
-        </div>
+    
+    <div class="page-info" id="page-info">
+        <div class="page-title" id="page-title">Loading...</div>
+        <div class="page-url" id="page-url">-</div>
     </div>
+    
+    <button class="analyze-btn" id="analyze-btn">
+        🔍 Analyze Terms & Conditions
+    </button>
+    
+    <div class="loading" id="loading">
+        <div>⏳ Extracting page content...</div>
+    </div>
+    
+    <div class="error" id="error">
+        <div id="error-text">Something went wrong</div>
+    </div>
+    
+    <div class="content-area" id="content-area"></div>
 
     <script src="popup.js"></script>
 </body>

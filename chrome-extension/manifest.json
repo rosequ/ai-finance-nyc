@@ -1,16 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "Terms & Conditions Analyzer",
+  "name": "Simple Terms & Conditions Analyzer",
   "version": "1.0",
-  "description": "Intelligent analysis of terms and conditions on any webpage using AI",
+  "description": "Extract and display page content for terms and conditions analysis",
   "permissions": [
-    "activeTab",
-    "scripting",
-    "storage",
-    "tabs"
-  ],
-  "host_permissions": [
-    "<all_urls>"
+    "activeTab"
   ],
   "action": {
     "default_popup": "popup.html",
@@ -23,19 +17,10 @@
       "run_at": "document_idle"
     }
   ],
-  "background": {
-    "service_worker": "background.js"
-  },
   "icons": {
     "16": "icons/icon-16.svg",
     "32": "icons/icon-32.svg",
     "48": "icons/icon-48.svg",
     "128": "icons/icon-128.svg"
-  },
-  "web_accessible_resources": [
-    {
-      "resources": ["analysis-overlay.html", "analysis-overlay.css"],
-      "matches": ["<all_urls>"]
-    }
-  ]
+  }
 }
